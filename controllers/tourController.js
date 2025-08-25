@@ -39,11 +39,12 @@ exports.getAllTours = async (req, res) => {
       .where('difficulty')
       .equals('easy')
       .where('duration')
-      .equals(5);
-*/
+      .equals(5);*/
 
     // 2) SORTING
     if (req.query.sort) {
+      console.log(req.query.sort);
+
       query = query.sort(req.query.sort.replace(',', ' '));
 
       // Default one to sort newest first
@@ -51,6 +52,25 @@ exports.getAllTours = async (req, res) => {
       query = query.sort('-createdAt');
     }
 
+    // 3) Field limiting
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select('name duration price difficulty');
+    } else {
+      query = query.select('-__v');
+    }
+
+    // 4) PAGINATION
+    const page = req.query.page * 1 || 1; //converting a str to number
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numTours = await Tour.countDocuments();
+      if (skip >= numTours) throw new Error('This page does not exist');
+    }
     // EXECUTE QUERY
     const tours = await query;
 
