@@ -8,7 +8,9 @@ from a controller therefore all methods must be called on it!
 
 const router = express.Router();
 
-// If I have a function for checking something it goes beofre actual response function
+router
+  .route('/top-5-cheap')
+  .get(tourController.aliasTopTours, tourController.getAllTours);
 
 router
   .route('/')
