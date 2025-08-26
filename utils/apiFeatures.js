@@ -1,4 +1,6 @@
 class APIFeatures {
+  // Query is an object that is a result of calling a method like .find()
+  // Query String is URL (req.query) part ?sort=price&limit=10
   constructor(query, queryString) {
     this.query = query;
     this.queryString = queryString;
