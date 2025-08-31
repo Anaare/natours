@@ -1,0 +1,57 @@
+const mongoose = require('mongoose');
+const validator = require('validator');
+const bcrypt = require('bcryptjs');
+
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: [true, 'Please, tell us your name'] },
+  email: {
+    type: String,
+    required: [true, 'Please provide email'],
+    unique: true,
+    lowercase: true,
+    validate: [validator.isEmail, 'Please provide a valid email'],
+  },
+  photo: String,
+  password: {
+    type: String,
+    required: [true, 'Please, provide a password'],
+    minlength: 8,
+    select: false, // Doesn't get send to a client doesn't work with CREATE!
+  },
+  passwordConfirm: {
+    type: String,
+    required: [true, 'Please, confirm a password'],
+    validate: {
+      validator: function (el) {
+        // This only works on CREATE and SAVE
+        return el === this.password;
+      },
+      message: 'Passwords are not the same',
+    },
+  },
+});
+
+// PASSWORD ENCRYPTION (hashing)
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+
+  //   Hash the password with cost of 12
+  this.password = await bcrypt.hash(this.password, 12);
+
+  //   After user created there password this field isn't really needed anymore in a DB
+  //   Delete the passwordConfirm field
+  this.passwordConfirm = undefined;
+
+  next();
+});
+
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword,
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
