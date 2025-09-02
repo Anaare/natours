@@ -1,6 +1,6 @@
 const express = require('express');
 const tourController = require('../controllers/tourController');
-
+const authController = require('../controllers/authController');
 /* 
 tourController is an object containing all functions that I exported 
 from a controller therefore all methods must be called on it! 
@@ -17,7 +17,7 @@ router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
 
 router
   .route('/')
-  .get(tourController.getAllTours)
+  .get(authController.protect, tourController.getAllTours)
   .post(tourController.createTour); // This is CHAINING multiple middlewares
 
 router
