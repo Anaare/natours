@@ -1,8 +1,11 @@
 const { promisify } = require('util');
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const appError = require('../utils/appError');
+const sendEmail = require('../utils/email');
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -14,6 +17,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
+    role: req.body.role,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
   });
@@ -93,3 +97,128 @@ exports.protect = catchAsync(async (req, res, next) => {
   req.user = currentUser;
   next();
 });
+
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    // roles is an array (closure)
+    // Since protect middleware runs first, we have access to req.user.role
+    console.log(req.user.role);
+
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new appError('You do not have permission to perform this action', 403),
+      );
+    }
+    next();
+  };
+};
+
+// I NEED TO GO THROUGH HOW EXACTLY THIS TRAPPING THINGY WORKS! MAILTRAP.IO
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  // 1) Get user based on POSTed email
+  console.log(req.body);
+
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return next(new appError('There is no user with that email address.', 404));
+  }
+  // 2) Generate the random reset
+  const resetToken = user.createPasswordResetToken();
+  console.log(resetToken);
+
+  await user.save({ validateBeforeSave: false });
+
+  // 3) Send it to user's email
+  const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+
+  const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: 'Your password reset token (valid for 10 mins)',
+      message,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Token sent to email!',
+    });
+  } catch (error) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+
+    await user.save({ validateBeforeSave: false });
+
+    return next(
+      new appError(
+        'There was an error sending the email. Try again later',
+        500,
+      ),
+    );
+  }
+});
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  // 1) Get user based on the token
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() },
+  });
+
+  // 2) If token has not expired and there is a user, set the new password
+  if (!user) {
+    return next(new appError('Token is invalid or has expired', 400));
+  }
+
+  // Saving is NEEDED, because this only modifies the document
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+
+  await user.save();
+
+  // 3) Update changedPasswordAt property for the user
+  // 4) Log the user in, send JWT to a client
+  const token = signToken(user._id);
+
+  res.status(200).json({
+    status: 'success',
+    token,
+  });
+});
+
+exports.updatePassword = async (req, res, next) => {
+  // 1) Get user from the collection
+  const user = await User.findOne({ email: req.body.email }).select(
+    '+password',
+  ); // password won't show so we select it manually;
+
+  // 2) Check if POSTed current password is correct
+  if (
+    !user ||
+    !(await user.correctPassword(req.body.currentPassword, user.password))
+  ) {
+    return next(new appError('Incorrect email or password', 401));
+  }
+
+  // 3) Update the password
+  user.password = await bcrypt.hash(req.body.currentPassword, 12);
+  console.log(user);
+
+  // 4) Log user in, send JWT
+  const token = signToken(user._id);
+
+  res.status(200).json({
+    status: 'success',
+    token,
+  });
+};
