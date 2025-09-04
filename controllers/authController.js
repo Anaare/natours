@@ -13,6 +13,18 @@ const signToken = (id) => {
   });
 };
 
+const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+
+  res.status(statusCode).json({
+    status: 'success',
+    token,
+    data: {
+      user,
+    },
+  });
+};
+
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
@@ -22,15 +34,16 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
 
-  const token = signToken(newUser._id);
+  createSendToken(newUser, 201, res);
+  // const token = signToken(newUser._id);
 
-  res.status(201).json({
-    status: 'success',
-    token,
-    data: {
-      user: newUser,
-    },
-  });
+  // res.status(201).json({
+  //   status: 'success',
+  //   token,
+  //   data: {
+  //     user: newUser,
+  //   },
+  // });
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -48,12 +61,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new appError('Incorrect email or password', 401));
   }
   // 3) If everything is OK, send token back to a client
-  const token = signToken(user._id);
-
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  createSendToken(user, 200, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -188,15 +196,13 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   // 3) Update changedPasswordAt property for the user
   // 4) Log the user in, send JWT to a client
-  const token = signToken(user._id);
-
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  createSendToken(user, 200, res);
 });
 
-exports.updatePassword = async (req, res, next) => {
+// MY SOLUTION
+
+/*
+exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from the collection
   const user = await User.findOne({ email: req.body.email }).select(
     '+password',
@@ -207,9 +213,10 @@ exports.updatePassword = async (req, res, next) => {
     !user ||
     !(await user.correctPassword(req.body.currentPassword, user.password))
   ) {
-    return next(new appError('Incorrect email or password', 401));
+    return next(new appError('Your current password is wrong', 401));
   }
 
+  // I NEEDED TO SAVE IT so I won't have to encrypt AGAIN like this
   // 3) Update the password
   user.password = await bcrypt.hash(req.body.currentPassword, 12);
   console.log(user);
@@ -221,4 +228,18 @@ exports.updatePassword = async (req, res, next) => {
     status: 'success',
     token,
   });
-};
+});
+*/
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select('+password');
+
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+    return next(new appError('Your current password is wrong', 401));
+  }
+
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+  createSendToken(user, 200, res);
+});
