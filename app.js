@@ -1,5 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 
 const appError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -8,17 +10,39 @@ const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
-// 1) MIDDLEWARES
+// 1) GLOBAL MIDDLEWARES
 
 // app.use is a METHOD used to MOUNT middleware functions!!!
+
+// Set security HTTP headers
+app.use(helmet());
+
+// Development logging in a console
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
-app.use(express.json());
+// Rate limiter counts number of requests and BLOCKS then when there's TOO MANY
+// 1) Creating limiter
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000, //Timeframe
+  message: 'Too many requests from this IP, please try again in an hour!',
+});
+
+// 2) Mounting limiter
+app.use('/api', limiter);
+
+// Body Parser, reading data from body into req.body
+app.use(
+  express.json({
+    limit: '10kb',
+  }),
+);
 
 // Serve static files
 // To access it http://localhost:3000/overview.html (It doesn't need /public in it anymore)
 app.use(express.static(`${__dirname}/public`));
 
+// Test Middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
 
