@@ -38,6 +38,20 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
+});
+
+// pre => Something that will happen before query - in this case filtering out active status so
+// We don't show inactive ("deleted") users
+// This query middleware function is responsible for showing ONLY users that have active status
+userSchema.pre(/^find/, function (next) {
+  // Points to CURRENT QUERY
+  this.find({ active: { $ne: false } });
+  next();
 });
 
 // PASSWORD ENCRYPTION (hashing)
