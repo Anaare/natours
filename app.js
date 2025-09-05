@@ -2,6 +2,9 @@ const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const hpp = require('hpp');
 
 const appError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -35,6 +38,26 @@ app.use('/api', limiter);
 app.use(
   express.json({
     limit: '10kb',
+  }),
+);
+
+// Data sanitization against NoSQL query injection (Someone is ABLE to login without knowing email)
+app.use(mongoSanitize());
+
+// Data sanitization against XSS
+app.use(xss());
+
+// Prevent parameter pollution
+app.use(
+  hpp({
+    whitelist: [
+      'duration',
+      'ratingsAverage',
+      'ratingsQuantity',
+      'maxGroupSize',
+      'difficulty',
+      'price',
+    ],
   }),
 );
 
