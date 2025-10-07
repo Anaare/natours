@@ -30,6 +30,10 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 });
 
 exports.getTour = catchAsync(async (req, res, next) => {
+  // populate will fill up guides with the actual data but only in QUERY, not in database
+  // This will populate with EVERY FIELD in guides
+  // const tour = await Tour.findById(req.params.id).populate('guides');
+
   const tour = await Tour.findById(req.params.id);
 
   if (!tour) {
