@@ -3,6 +3,8 @@ const APIFeatures = require('../utils/apiFeatures');
 const appError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
+const factory = require('./handlerFactory');
+
 exports.aliasTopTours = (req, res, next) => {
   req.url =
     '/?sort=-ratingsAverage,price&fields=ratingsAverage,price,name,difficulty,summary&limit=5';
@@ -10,81 +12,11 @@ exports.aliasTopTours = (req, res, next) => {
   next();
 };
 
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  // EXECUTE QUERY
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-
-  const tours = await features.query;
-
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-      tours,
-    },
-  });
-});
-
-exports.getTour = catchAsync(async (req, res, next) => {
-  // populate will fill up guides with the actual data but only in QUERY, not in database
-  // This will populate with EVERY FIELD in guides
-  // const tour = await Tour.findById(req.params.id).populate('guides');
-
-  const tour = await Tour.findById(req.params.id).populate('reviews');
-
-  if (!tour) {
-    return next(new appError('No tour found with that ID', 404));
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  });
-});
-
-exports.createTour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
-  res.status(201).json({ status: 'success', data: { tour: newTour } });
-});
-
-exports.updateTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!tour) {
-    return next(new appError('No tour found with that ID', 404));
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  });
-});
-
-exports.deleteTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndDelete(req.params.id);
-
-  if (!tour) {
-    return next(new appError('No tour found with that ID', 404));
-  }
-
-  res.status(204).json({
-    status: 'success',
-    data: {
-      tour: null,
-    },
-  });
-});
+exports.getAllTours = factory.getAll(Tour);
+exports.getTour = factory.getOne(Tour, { path: 'reviews' });
+exports.createTour = factory.createOne(Tour);
+exports.updateTour = factory.updateOne(Tour);
+exports.deleteTour = factory.deleteOne(Tour);
 
 exports.getTourStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
@@ -163,3 +95,60 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+// exports.createTour = catchAsync(async (req, res, next) => {
+//   const newTour = await Tour.create(req.body);
+//   res.status(201).json({ status: 'success', data: { tour: newTour } });
+// });
+
+// exports.updateTour = catchAsync(async (req, res, next) => {
+//   const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+//     new: true,
+//     runValidators: true,
+//   });
+
+//   if (!tour) {
+//     return next(new appError('No tour found with that ID', 404));
+//   }
+
+//   res.status(200).json({
+//     status: 'success',
+//     data: {
+//       tour,
+//     },
+//   });
+// });
+
+// exports.deleteTour = catchAsync(async (req, res, next) => {
+//   const tour = await Tour.findByIdAndDelete(req.params.id);
+
+//   if (!tour) {
+//     return next(new appError('No tour found with that ID', 404));
+//   }
+
+//   res.status(204).json({
+//     status: 'success',
+//     data: {
+//       tour: null,
+//     },
+//   });
+// });
+
+// exports.getAllTours = catchAsync(async (req, res, next) => {
+//   // EXECUTE QUERY
+//   const features = new APIFeatures(Tour.find(), req.query)
+//     .filter()
+//     .sort()
+//     .limitFields()
+//     .paginate();
+
+//   const tours = await features.query;
+
+//   res.status(200).json({
+//     status: 'success',
+//     results: tours.length,
+//     data: {
+//       tours,
+//     },
+//   });
+// });
