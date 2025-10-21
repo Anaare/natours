@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 // const User = require('./userModel');
-// const slugify = require('slugify');
+const slugify = require('slugify');
 // const validator = require('validator');
 
 // 1. Create Schema for a database!
@@ -108,6 +108,9 @@ const tourSchema = new mongoose.Schema(
   },
 );
 
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({ slug: 1 });
+
 // Virtual Properties
 tourSchema.virtual('durationWeeks').get(function () {
   // We need this keyword, therefore arrow function CAN'T be used
@@ -142,19 +145,18 @@ tourSchema.pre('save', async function (next) {
 */
 
 // Document Middleware: runs before .save() and .create()
-/*
+
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
 
   next();
 });
 
-tourSchema.post('save', function (doc, next) {
-  console.log(doc);
+// tourSchema.post('save', function (doc, next) {
+//   console.log(doc);
 
-  next();
-});
-*/
+//   next();
+// });
 
 // 2. Create a model for the Schema
 const Tour = mongoose.model('Tour', tourSchema);

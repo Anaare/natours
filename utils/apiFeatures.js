@@ -13,21 +13,10 @@ class APIFeatures {
     excludedFields.forEach((el) => delete queryObj[el]);
 
     // 1B) ADVANCED FILTERING
-    const newQueryObj = {};
-    for (const key in queryObj) {
-      if (key.includes('[')) {
-        const parts = key.split('[');
-        const field = parts[0];
-        const operator = `$${parts[1].slice(0, -1)}`;
-        newQueryObj[field] = {
-          [operator]: queryObj[key],
-        };
-      } else {
-        newQueryObj[key] = queryObj[key];
-      }
-    }
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-    this.query = this.query.find(newQueryObj);
+    this.query = this.query.find(JSON.parse(queryStr));
 
     return this;
   }
