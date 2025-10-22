@@ -31,6 +31,9 @@ router
   .route('/tours-within/:distance/center/:latlng/unit/:unit')
   .get(tourController.getToursWithin);
 
+// Distance from a certain point to EVERY tour
+router.route('/distances/:latlng/unit/:unit').get(tourController.getDistance);
+
 ////////////////////////////////////////////////////////////////////////////
 
 router
