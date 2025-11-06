@@ -21,41 +21,7 @@
     />
   </head>
   <body>
-    <header class="header">
-      <nav class="nav nav--tours">
-        <a href="/overview.html" class="nav__el">All tours</a>
-        <form class="nav__search">
-          <button class="nav__search-btn">
-            <svg>
-              <use xlink:href="img/icons.svg#icon-search"></use>
-            </svg>
-          </button>
-          <input
-            type="text"
-            placeholder="Search tours"
-            class="nav__search-input"
-          />
-        </form>
-      </nav>
-      <div class="header__logo">
-        <img src="img/logo-white.png" alt="Natours logo" />
-      </div>
-      <nav class="nav nav--user">
-        <a href="#" class="nav__el">My bookings</a>
-        <button class="nav__el">Log out</button>
-        <a href="#" class="nav__el">
-          <img src="img/user.jpg" alt="User photo" class="nav__user-img" />
-          <span>Jonas</span>
-        </a>
-
-        <!--
-        <button class="nav__el">Log in</button>
-        <button class="nav__el nav__el--cta">Sign up</button>
-        -->
-      </nav>
-    </header>
-
-    <section class="section-header">
+    <!-- <section class="section-header">
       <div class="heading-box">
         <h1 class="heading-primary">
           <span
@@ -78,9 +44,9 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
-    <section class="section-description">
+    <!-- <section class="section-description">
       <div class="overview-box">
         <div>
           <div class="overview-box__group">
@@ -166,9 +132,9 @@
           laborum!
         </p>
       </div>
-    </section>
+    </section> -->
 
-    <section class="section-pictures">
+    <!-- <section class="section-pictures">
       <div class="picture-box">
         <img
           class="picture-box__img picture-box__img--1"
@@ -190,85 +156,85 @@
           alt="The Park Camper Tour 1"
         />
       </div>
-    </section>
+    </section> -->
 
-    <section class="section-map">
+    <!-- <section class="section-map">
       <div id="map"></div>
       <script>
         mapboxgl.accessToken =
-          'pk.eyJ1Ijoiam9uYXNzY2htZWR0bWFubiIsImEiOiJjam54ZmM5N3gwNjAzM3dtZDNxYTVlMnd2In0.ytpI7V7w7cyT1Kq5rT9Z1A';
+          "pk.eyJ1Ijoiam9uYXNzY2htZWR0bWFubiIsImEiOiJjam54ZmM5N3gwNjAzM3dtZDNxYTVlMnd2In0.ytpI7V7w7cyT1Kq5rT9Z1A";
 
         const geojson = {
-          type: 'FeatureCollection',
+          type: "FeatureCollection",
           features: [
             {
-              type: 'Feature',
+              type: "Feature",
               geometry: {
-                type: 'Point',
-                coordinates: [-112.987418, 37.198125]
+                type: "Point",
+                coordinates: [-112.987418, 37.198125],
               },
               properties: {
-                description: 'Zion Canyon National Park'
-              }
+                description: "Zion Canyon National Park",
+              },
             },
             {
-              type: 'Feature',
+              type: "Feature",
               geometry: {
-                type: 'Point',
-                coordinates: [-111.376161, 36.86438]
+                type: "Point",
+                coordinates: [-111.376161, 36.86438],
               },
               properties: {
-                description: 'Antelope Canyon'
-              }
+                description: "Antelope Canyon",
+              },
             },
             {
-              type: 'Feature',
+              type: "Feature",
               geometry: {
-                type: 'Point',
-                coordinates: [-112.115763, 36.058973]
+                type: "Point",
+                coordinates: [-112.115763, 36.058973],
               },
               properties: {
-                description: 'Grand Canyon National Park'
-              }
+                description: "Grand Canyon National Park",
+              },
             },
             {
-              type: 'Feature',
+              type: "Feature",
               geometry: {
-                type: 'Point',
-                coordinates: [-116.107963, 34.011646]
+                type: "Point",
+                coordinates: [-116.107963, 34.011646],
               },
               properties: {
-                description: 'Joshua Tree National Park'
-              }
-            }
-          ]
+                description: "Joshua Tree National Park",
+              },
+            },
+          ],
         };
 
         const map = new mapboxgl.Map({
-          container: 'map',
-          style: 'mapbox://styles/jonasschmedtmann/cjnxfn3zk7bj52rpegdltx58h',
-          scrollZoom: false
+          container: "map",
+          style: "mapbox://styles/jonasschmedtmann/cjnxfn3zk7bj52rpegdltx58h",
+          scrollZoom: false,
         });
 
         const bounds = new mapboxgl.LngLatBounds();
 
-        geojson.features.forEach(function(marker) {
-          var el = document.createElement('div');
-          el.className = 'marker';
+        geojson.features.forEach(function (marker) {
+          var el = document.createElement("div");
+          el.className = "marker";
 
           new mapboxgl.Marker({
             element: el,
-            anchor: 'bottom'
+            anchor: "bottom",
           })
             .setLngLat(marker.geometry.coordinates)
             .addTo(map);
 
           new mapboxgl.Popup({
             offset: 30,
-            closeOnClick: false
+            closeOnClick: false,
           })
             .setLngLat(marker.geometry.coordinates)
-            .setHTML('<p>' + marker.properties.description + '</p>')
+            .setHTML("<p>" + marker.properties.description + "</p>")
             .addTo(map);
 
           bounds.extend(marker.geometry.coordinates);
@@ -279,45 +245,45 @@
             top: 200,
             bottom: 150,
             left: 50,
-            right: 50
-          }
+            right: 50,
+          },
         });
 
-        map.on('load', function() {
+        map.on("load", function () {
           map.addLayer({
-            id: 'route',
-            type: 'line',
+            id: "route",
+            type: "line",
             source: {
-              type: 'geojson',
+              type: "geojson",
               data: {
-                type: 'Feature',
+                type: "Feature",
                 properties: {},
                 geometry: {
-                  type: 'LineString',
+                  type: "LineString",
                   coordinates: [
                     [-112.987418, 37.198125],
                     [-111.376161, 36.86438],
                     [-112.115763, 36.058973],
-                    [-116.107963, 34.011646]
-                  ]
-                }
-              }
+                    [-116.107963, 34.011646],
+                  ],
+                },
+              },
             },
             layout: {
-              'line-join': 'round',
-              'line-cap': 'round'
+              "line-join": "round",
+              "line-cap": "round",
             },
             paint: {
-              'line-color': '#55c57a',
-              'line-opacity': 0.6,
-              'line-width': 3
-            }
+              "line-color": "#55c57a",
+              "line-opacity": 0.6,
+              "line-width": 3,
+            },
           });
         });
       </script>
-    </section>
+    </section> -->
 
-    <section class="section-reviews">
+    <!-- <section class="section-reviews">
       <div class="reviews">
         <div class="reviews__card">
           <div class="reviews__avatar">
@@ -483,9 +449,9 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
-    <section class="section-cta">
+    <!-- <section class="section-cta">
       <div class="cta">
         <div class="cta__img cta__img--logo">
           <img src="img/logo-white.png" alt="Natours logo" class="" />
@@ -501,9 +467,9 @@
           <button class="btn btn--green span-all-rows">Book tour now!</button>
         </div>
       </div>
-    </section>
+    </section> -->
 
-    <div class="footer">
+    <!-- <div class="footer">
       <div class="footer__logo">
         <img src="img/logo-green.png" alt="Natours logo" />
       </div>
@@ -517,6 +483,6 @@
       <p class="footer__copyright">
         &copy; by Jonas Schmedtmann. All rights reserved.
       </p>
-    </div>
+    </div> -->
   </body>
 </html>

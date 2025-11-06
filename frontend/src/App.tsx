@@ -1,13 +1,14 @@
-import "./App.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import Main from "./components/Main";
+// import Overview from "./pages/Overview";
+import { Outlet } from "react-router";
+import "./App.css";
 
 function App() {
   return (
     <>
       <Header />
-      <Main />
+      <Outlet />
       <Footer />
     </>
   );

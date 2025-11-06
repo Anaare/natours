@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <div className="footer">
+    <footer className="footer">
       <div className="footer__logo">
         <img src="img/logo-green.png" alt="Natours logo" />
       </div>
@@ -22,9 +22,9 @@ const Footer = () => {
         </li>
       </ul>
       <p className="footer__copyright">
-        &copy; by Jonas Schmedtmann. All rights reserved.
+        &copy; by Ana Arevadze. All rights reserved.
       </p>
-    </div>
+    </footer>
   );
 };
 

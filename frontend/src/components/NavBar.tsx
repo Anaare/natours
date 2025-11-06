@@ -22,14 +22,20 @@ const NavBar = () => {
         <img src="img/logo-white.png" alt="Natours logo" />
       </div>
       <nav className="nav nav--user">
+        {/* 
+        // ONLY AVAILABLE IF USER IS LOGGED IN
         <a href="#" className="nav__el">
           My bookings
         </a>
         <a href="#" className="nav__el">
           <img src="img/user.jpg" alt="User photo" className="nav__user-img" />
           <span>Jonas</span>
-        </a>
+        </a> */}
 
+        {/* OBVIOUSLY IF THE USER IS LOGGED IN THIS BUTTONS WILL BE HIDDEN 
+            could <Activity/> be useful here?
+        */}
+        <button className="nav__el">Log in</button>
         <button className="nav__el nav__el--cta">Sign up</button>
       </nav>
     </>
