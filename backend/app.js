@@ -6,6 +6,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 
+const cors = require('cors');
+
 const appError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
@@ -20,6 +22,15 @@ const app = express();
 
 // Set security HTTP headers
 app.use(helmet());
+
+// Configuring CORS
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    credentials: true,
+  }),
+);
 
 // Development logging in a console
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
