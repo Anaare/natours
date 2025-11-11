@@ -19,7 +19,6 @@ export const useFetchTours = () => {
 
         const data: ApiResponse = await res.json();
         setTours(data.data.doc);
-        console.log(tours);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "An unknown error occurred"
@@ -28,7 +27,7 @@ export const useFetchTours = () => {
     };
 
     fetchTours();
-  }, [tours]);
+  }, []);
 
   return { tours, loading, error };
 };

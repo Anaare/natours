@@ -44,6 +44,7 @@ export interface Tour {
   guides: Guide[];
   durationWeeks?: number;
   id: string;
+  slug: string;
 }
 
 // 5. Interface for the API Response Body (the whole object you showed)

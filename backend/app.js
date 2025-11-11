@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 // Rate limiter counts number of requests and BLOCKS then when there's TOO MANY
 // 1) Creating limiter
 const limiter = rateLimit({
-  max: 100,
+  max: 500,
   windowMs: 60 * 60 * 1000, //Timeframe
   message: 'Too many requests from this IP, please try again in an hour!',
 });

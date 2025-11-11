@@ -1,4 +1,5 @@
 // import { Link } from "react-router";
+import { Link } from "react-router";
 import type { Tour } from "../../types/index";
 
 interface CardProps {
@@ -6,63 +7,77 @@ interface CardProps {
 }
 
 const Card = ({ tour }: CardProps) => {
+  const dateString = tour.startDates[0];
+
+  const startDate = new Date(dateString);
+
+  const formattedDate = startDate.toLocaleDateString("en-US", {
+    month: "long", // Full month name (e.g., June)
+    year: "numeric", // Full year (e.g., 2021)
+  });
+
   return (
-    // <div className="card">
-    //   <div className="card__header">
-    //     <div className="card__picture">
-    //       <div className="card__picture-overlay">&nbsp;</div>
-    //       <img src={src} alt={alt} className="card__picture-img" />
-    //     </div>
+    <div className="card">
+      <div className="card__header">
+        <div className="card__picture">
+          <div className="card__picture-overlay">&nbsp;</div>
+          <img
+            src={`/img/tours/${tour.imageCover}`}
+            alt={tour.name}
+            className="card__picture-img"
+          />
+        </div>
 
-    //     <h3 className="heading-tertirary">
-    //       <span>{heading}</span>
-    //     </h3>
-    //   </div>
+        <h3 className="heading-tertirary">
+          <span>{tour.name}</span>
+        </h3>
+      </div>
 
-    //   <div className="card__details">
-    //     <h4 className="card__sub-heading">{subheading}</h4>
-    //     <p className="card__text">{description}</p>
-    //     <div className="card__data">
-    //       <svg className="card__icon">
-    //         <use xlinkHref="img/icons.svg#icon-map-pin"></use>
-    //       </svg>
-    //       <span>{location}</span>
-    //     </div>
-    //     <div className="card__data">
-    //       <svg className="card__icon">
-    //         <use xlinkHref="img/icons.svg#icon-calendar"></use>
-    //       </svg>
-    //       <span>{date}</span>
-    //     </div>
-    //     <div className="card__data">
-    //       <svg className="card__icon">
-    //         <use xlinkHref="img/icons.svg#icon-flag"></use>
-    //       </svg>
-    //       <span>{stops} stops</span>
-    //     </div>
-    //     <div className="card__data">
-    //       <svg className="card__icon">
-    //         <use xlinkHref="img/icons.svg#icon-user"></use>
-    //       </svg>
-    //       <span>{people} people</span>
-    //     </div>
-    //   </div>
+      <div className="card__details">
+        <h4 className="card__sub-heading">{`${tour.difficulty} ${tour.duration}-day tour`}</h4>
+        <p className="card__text">{tour.summary}</p>
+        <div className="card__data">
+          <svg className="card__icon">
+            <use xlinkHref="img/icons.svg#icon-map-pin"></use>
+          </svg>
+          <span>{tour.startLocation.description}</span>
+        </div>
+        <div className="card__data">
+          <svg className="card__icon">
+            <use xlinkHref="img/icons.svg#icon-calendar"></use>
+          </svg>
+          <span>{formattedDate}</span>
+        </div>
+        <div className="card__data">
+          <svg className="card__icon">
+            <use xlinkHref="img/icons.svg#icon-flag"></use>
+          </svg>
+          <span>{tour.locations.length} stops</span>
+        </div>
+        <div className="card__data">
+          <svg className="card__icon">
+            <use xlinkHref="img/icons.svg#icon-user"></use>
+          </svg>
+          <span>{tour.maxGroupSize} people</span>
+        </div>
+      </div>
 
-    //   <div className="card__footer">
-    //     <p>
-    //       <span className="card__footer-value">${price}</span>
-    //       <span className="card__footer-text">per person</span>
-    //     </p>
-    //     <p className="card__ratings">
-    //       <span className="card__footer-value">{rating}</span>
-    //       <span className="card__footer-text">rating ({ratingsTotal})</span>
-    //     </p>
-    //     <Link to="tours/:tourSlug" className="btn btn--green btn--small">
-    //       Details
-    //     </Link>
-    //   </div>
-    // </div>
-    <div>{tour.name}</div>
+      <div className="card__footer">
+        <p>
+          <span className="card__footer-value">${tour.price}</span>
+          <span className="card__footer-text">per person</span>
+        </p>
+        <p className="card__ratings">
+          <span className="card__footer-value">{tour.ratingsAverage}</span>
+          <span className="card__footer-text">
+            rating ({tour.ratingsQuantity})
+          </span>
+        </p>
+        <Link to={`tours/${tour.slug}`} className="btn btn--green btn--small">
+          Details
+        </Link>
+      </div>
+    </div>
   );
 };
 
