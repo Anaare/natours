@@ -17,6 +17,7 @@ exports.createTour = factory.createOne(Tour);
 exports.updateTour = factory.updateOne(Tour);
 exports.deleteTour = factory.deleteOne(Tour);
 
+// Get Tour By Slug
 exports.getTourBySlug = catchAsync(async (req, res, next) => {
   const tour = await Tour.findOne({ slug: req.params.slug });
   if (!tour) return next(new appError('No tour found', 404));
