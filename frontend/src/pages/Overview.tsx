@@ -3,7 +3,6 @@ import Card from "../components/overview-components/Card";
 
 const Overview = () => {
   const { tours } = useFetchTours();
-  console.log(tours);
 
   return (
     <main className="main">

@@ -14,7 +14,7 @@ const router = createBrowserRouter([
         // loader: overviewLoader, // Data loading function for the list of tours
       },
       {
-        path: "tours/:tourSlug", // I'll need to add ACTUAL NAME of the tour replacing :tourSlug
+        path: "tours/:slug", // I'll need to add ACTUAL NAME of the tour replacing :tourSlug
         element: <Tour />,
         // loader function for the single tour details goes here
       },

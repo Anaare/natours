@@ -1,32 +1,40 @@
-interface TourDetailsProps {
-  name: string;
-  days: number;
-  location: string;
+import type { Tour } from "../../types";
+
+interface SectionHeaderProps {
+  tourData: Tour;
 }
 
-const SectionHeader = ({ name, days, location }: TourDetailsProps) => {
+const SectionHeader = ({ tourData }: SectionHeaderProps) => {
+  console.log(tourData);
+
   return (
     <section className="section-header">
+      <div className="header__hero">
+        <div className="header__hero-overlay">&nbsp;</div>
+        <img
+          className="header__hero-img"
+          src={`/img/tours/${tourData.imageCover}`}
+          alt={tourData.name}
+        />
+      </div>
       <div className="heading-box">
         <h1 className="heading-primary">
-          <span>
-            {/* The Park <br />
-            Camper Tour */}
-            {name}
-          </span>
+          <span>{tourData.name}</span>
         </h1>
         <div className="heading-box__group">
           <div className="heading-box__detail">
             <svg className="heading-box__icon">
-              <use xlinkHref="img/icons.svg#icon-clock"></use>
+              <use href="/img/icons.svg#icon-clock"></use>
             </svg>
-            <span className="heading-box__text">{days} days</span>
+            <span className="heading-box__text">{tourData.duration} days</span>
           </div>
           <div className="heading-box__detail">
             <svg className="heading-box__icon">
-              <use xlinkHref="img/icons.svg#icon-map-pin"></use>
+              <use href="/img/icons.svg#icon-map-pin"></use>
             </svg>
-            <span className="heading-box__text">{location}</span>
+            <span className="heading-box__text">
+              {tourData.startLocation.description}
+            </span>
           </div>
         </div>
       </div>
