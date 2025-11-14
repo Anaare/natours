@@ -55,3 +55,14 @@ export interface ApiResponse {
     doc: Tour[];
   };
 }
+
+// 6. Interface for reviews
+export interface Reviews {
+  _id: string;
+  review: string;
+  rating: number;
+  createdAt: string;
+  tour: string;
+  user: string[];
+  id: string;
+}

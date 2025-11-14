@@ -5,8 +5,6 @@ interface SectionHeaderProps {
 }
 
 const SectionHeader = ({ tourData }: SectionHeaderProps) => {
-  console.log(tourData);
-
   return (
     <section className="section-header">
       <div className="header__hero">
