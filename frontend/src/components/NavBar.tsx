@@ -8,7 +8,7 @@ const NavBar = () => {
         <form className="nav__search">
           <button className="nav__search-btn">
             <svg>
-              <use xlinkHref="img/icons.svg#icon-search"></use>
+              <use href="/img/icons.svg#icon-search"></use>
             </svg>
           </button>
           <input
@@ -19,7 +19,7 @@ const NavBar = () => {
         </form>
       </nav>
       <div className="header__logo">
-        <img src="img/logo-white.png" alt="Natours logo" />
+        <img src="/img/logo-white.png" alt="Natours logo" />
       </div>
       <nav className="nav nav--user">
         {/* 
