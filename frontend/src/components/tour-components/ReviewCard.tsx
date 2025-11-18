@@ -11,7 +11,7 @@ const ReviewCard = ({ reviews }: reviewsProps) => {
     <div className="reviews__card">
       <div className="reviews__avatar">
         <img
-          src="img/users/user-7.jpg"
+          src="/img/users/user-7.jpg"
           alt="Jim Brown"
           className="reviews__avatar-img"
         />

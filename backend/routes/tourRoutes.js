@@ -34,9 +34,6 @@ router
 // Distance from a certain point to EVERY tour
 router.route('/distances/:latlng/unit/:unit').get(tourController.getDistance);
 
-// Get a Tour based on slug
-router.route('/:slug').get(tourController.getTourBySlug);
-
 ////////////////////////////////////////////////////////////////////////////
 
 router
@@ -61,5 +58,8 @@ router
     authController.restrictTo('admin', 'lead-guide'),
     tourController.deleteTour,
   );
+
+// Get a Tour based on slug
+router.route('/slug/:slug').get(tourController.getTourBySlug);
 
 module.exports = router;
