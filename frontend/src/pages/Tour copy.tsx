@@ -1,21 +1,31 @@
 import { useEffect, useRef } from "react";
-import { useFetchSingleTour } from "../../hooks/useFetchSingleTour";
-
-// MAPBOX related imports
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+
+import Cta from "../components/tour-components/Cta";
+import Description from "../components/tour-components/Description";
+import SectionHeader from "../components/tour-components/Header";
+import { useFetchSingleTour } from "../hooks/useFetchSingleTour";
+import Pictures from "../components/tour-components/Pictures";
+import Reviews from "../components/tour-components/Reviews";
 
 interface MapboxMap {
   remove: () => void;
 }
 
-const Map = () => {
-  const { tour } = useFetchSingleTour();
+const Tour = () => {
+  const { tour, loading, error } = useFetchSingleTour();
 
   // 1. Ref for the HTML container
   const mapContainerRef = useRef(null);
   // 2. Ref to store the Mapbox instance (Prevents duplicates)
   const mapInstanceRef = useRef<MapboxMap | null>(null);
+
+  useEffect(() => {
+    if (tour) {
+      document.title = `${tour.name} | Tour Details`;
+    }
+  }, [tour]);
 
   useEffect(() => {
     // A. Safety Check: If tour isn't loaded or map already exists, stop.
@@ -33,7 +43,7 @@ const Map = () => {
         container: mapContainerRef.current,
         style: "mapbox://styles/jonasschmedtmann/cjnxfn3zk7bj52rpegdltx58h",
         scrollZoom: false,
-        interactive: false,
+        interactive: false, // <--- THIS DISABLES ALL USER INTERACTION (Zoom/Pan)
       });
 
       // Save the map instance to the ref so we don't create it again
@@ -82,15 +92,32 @@ const Map = () => {
     };
   }, [tour]);
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+  if (!tour) return <p>No tour found</p>;
+
   return (
-    <section className="section-map">
-      <div
-        id="map"
-        ref={mapContainerRef}
-        style={{ width: "100%", height: "500px" }}
-      ></div>
-    </section>
+    <>
+      <meta
+        name="description"
+        content={`Book your trip to ${tour.startLocation}. Price: ${tour.price}`}
+      />
+      <SectionHeader tourData={tour} />
+      <Description />
+      <Pictures />
+
+      <section className="section-map">
+        <div
+          id="map"
+          ref={mapContainerRef}
+          style={{ width: "100%", height: "500px" }}
+        ></div>
+      </section>
+
+      <Reviews />
+      <Cta />
+    </>
   );
 };
 
-export default Map;
+export default Tour;
