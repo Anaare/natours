@@ -13,7 +13,9 @@ export const useFetchSingleTour = () => {
     const fetchSingleTour = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://127.0.0.1:3000/api/v1/tours/${slug}`);
+        const res = await fetch(
+          `http://127.0.0.1:3000/api/v1/tours/slug/${slug}`
+        );
 
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);

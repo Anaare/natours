@@ -1,12 +1,10 @@
 import Cta from "../components/tour-components/Cta";
 import Description from "../components/tour-components/Description";
 import SectionHeader from "../components/tour-components/Header";
+import { useFetchSingleTour } from "../hooks/useFetchSingleTour";
 
-// import SectionHeader from "../components/tour-components/Header";
 import Pictures from "../components/tour-components/Pictures";
 import Reviews from "../components/tour-components/Reviews";
-
-import { useFetchSingleTour } from "../hooks/useFetchSingleTour";
 
 const Tour = () => {
   const { tour, loading, error } = useFetchSingleTour();
