@@ -9,6 +9,14 @@ interface MapboxMap {
   remove: () => void;
 }
 
+interface Location {
+  type: string;
+  coordinates: [number, number]; // Tuple: [longitude, latitude]
+  day: number;
+  description: string;
+  _id?: string; // Optional, if your DB sends IDs
+}
+
 const Map = () => {
   const { tour } = useFetchSingleTour();
 
@@ -41,7 +49,7 @@ const Map = () => {
 
       const bounds = new mapboxgl.LngLatBounds();
 
-      locations.forEach((loc) => {
+      locations.forEach((loc: Location) => {
         // Create marker element
         const el = document.createElement("div");
         el.className = "marker";

@@ -20,5 +20,8 @@
   "homepage": "https://github.com/Anaare/natours-v1#readme",
   "devDependencies": {
     "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "mapbox-gl": "^0.50.0"
   }
 }
