@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router";
 import App from "./App.tsx";
 import Overview from "./pages/Overview.tsx";
 import Tour from "./pages/Tour.tsx";
+import Login from "./components/Login.tsx";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: "tours/:slug", // I'll need to add ACTUAL NAME of the tour replacing :tourSlug
         element: <Tour />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
     ],
   },

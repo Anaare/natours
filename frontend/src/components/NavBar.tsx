@@ -1,10 +1,12 @@
+import { Link } from "react-router";
+
 const NavBar = () => {
   return (
     <>
       <nav className="nav nav--tours">
-        <a href="#" className="nav__el">
+        <Link to="/" className="nav__el">
           All tours
-        </a>
+        </Link>
         <form className="nav__search">
           <button className="nav__search-btn">
             <svg>
@@ -35,8 +37,13 @@ const NavBar = () => {
         {/* OBVIOUSLY IF THE USER IS LOGGED IN THIS BUTTONS WILL BE HIDDEN 
             could <Activity/> be useful here?
         */}
-        <button className="nav__el">Log in</button>
-        <button className="nav__el nav__el--cta">Sign up</button>
+
+        <Link to="/login" className="nav__el">
+          Log in
+        </Link>
+        <Link to="/logout" className="nav__el nav__el--cta">
+          Sign up
+        </Link>
       </nav>
     </>
   );
