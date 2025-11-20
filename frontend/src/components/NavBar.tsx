@@ -41,7 +41,7 @@ const NavBar = () => {
         <Link to="/login" className="nav__el">
           Log in
         </Link>
-        <Link to="/logout" className="nav__el nav__el--cta">
+        <Link to="/signup" className="nav__el nav__el--cta">
           Sign up
         </Link>
       </nav>
