@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 
 const cors = require('cors');
 
@@ -29,6 +30,7 @@ app.use(
     origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     credentials: true,
+    optionsSuccessStatus: 200,
   }),
 );
 
@@ -52,6 +54,9 @@ app.use(
     limit: '10kb',
   }),
 );
+
+// Cookie Parser
+app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection (Someone is ABLE to login without knowing email)
 app.use(mongoSanitize());
@@ -80,6 +85,7 @@ app.use(express.static(`${__dirname}/public`));
 // Test Middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
+  console.log(req.cookies);
 
   next();
 });

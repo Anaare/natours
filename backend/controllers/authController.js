@@ -12,6 +12,7 @@ const signToken = (id) => {
   });
 };
 
+/* 
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
@@ -19,9 +20,44 @@ const createSendToken = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
     ),
     httpOnly: true,
+    secure: false,
+    sameSite: 'none',
   };
 
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+
+  res.cookie('jwt', token, cookieOptions);
+
+  // Remove password from output
+  user.password = undefined;
+
+  res.status(statusCode).json({
+    status: 'success',
+    token,
+    data: {
+      user,
+    },
+  });
+};
+
+*/
+
+const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+
+  // Determine environment correctly and set cookie options.
+  // Note: Browsers block cookies with `SameSite=None` unless `Secure` is true.
+  // In development (http) it's safer to use `SameSite='lax'` and `secure=false`,
+  // or use a same-origin setup (dev proxy) so cookies are not treated as cross-site.
+  const isProduction = process.env.NODE_ENV === 'production';
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+    ),
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: 'lax',
+  };
 
   res.cookie('jwt', token, cookieOptions);
 
@@ -47,15 +83,6 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
 
   createSendToken(newUser, 201, res);
-  // const token = signToken(newUser._id);
-
-  // res.status(201).json({
-  //   status: 'success',
-  //   token,
-  //   data: {
-  //     user: newUser,
-  //   },
-  // });
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -85,6 +112,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
   if (!token) {
