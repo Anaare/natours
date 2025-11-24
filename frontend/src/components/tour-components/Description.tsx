@@ -1,5 +1,6 @@
 import { useFetchSingleTour } from "../../hooks/useFetchSingleTour";
 import GuidesCard from "./GuidesCard";
+import type { GuideInfo } from "../../types/index";
 
 const Description = () => {
   const { tour } = useFetchSingleTour();
@@ -56,7 +57,7 @@ const Description = () => {
 
           <div className="overview-box__group">
             <h2 className="heading-secondary ma-bt-lg">Your tour guides</h2>
-            {tour.guides.map((guide) => (
+            {tour.guides.map((guide: GuideInfo) => (
               <GuidesCard
                 key={guide._id}
                 src={guide.photo}
