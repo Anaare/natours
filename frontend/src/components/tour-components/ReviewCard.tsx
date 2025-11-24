@@ -1,4 +1,4 @@
-import type { Reviews } from "../../types";
+import type { Reviews } from "../../types/index";
 
 interface reviewsProps {
   reviews: Reviews | null;

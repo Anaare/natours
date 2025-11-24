@@ -66,3 +66,27 @@ export interface Reviews {
   user: string[];
   id: string;
 }
+
+// 7. User Login response
+export interface LoginResponse {
+  status: string;
+  token?: string;
+  data: {
+    user: {
+      _id: string;
+      name: string;
+      email: string;
+      role: string;
+      photo: string;
+    };
+  };
+}
+
+// 8. Guides Card props
+export interface GuideInfo {
+  src?: string;
+  role: string;
+  name: string;
+  photo?: string;
+  _id?: string;
+}

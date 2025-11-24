@@ -1,10 +1,10 @@
-interface GuidesCardProps {
-  src: string;
-  role: string;
-  name: string;
+import type { GuideInfo } from "../../types/index";
+
+interface GuidesCard {
+  GuidesCard: GuideInfo;
 }
 
-const GuidesCard = ({ src, role, name }: GuidesCardProps) => {
+const GuidesCard = ({ src, role, name }: GuideInfo) => {
   return (
     <div className="overview-box__detail">
       <img

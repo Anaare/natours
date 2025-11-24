@@ -1,22 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-
-// I need to move all my types to the file I have for it
-// Why doesn't cookies show up in application (chrome)
-
-interface LoginResponse {
-  status: string;
-  token?: string;
-  data: {
-    user: {
-      _id: string;
-      name: string;
-      email: string;
-      role: string;
-      photo: string;
-    };
-  };
-}
+import type { LoginResponse } from "../types/index";
 
 const Login = () => {
   const [email, setEmail] = useState("");
