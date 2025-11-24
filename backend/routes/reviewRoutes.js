@@ -6,8 +6,6 @@ const authController = require('../controllers/authController');
 // In order to get access to params like tourId etc we need mergeParams set to true
 const router = express.Router({ mergeParams: true });
 
-router.use(authController.protect);
-
 router
   .route('/')
   .get(reviewController.getAllReviews)
@@ -16,6 +14,8 @@ router
     reviewController.setTourUserIds,
     reviewController.createReview,
   );
+
+router.use(authController.protect);
 
 router
   .route('/:id')
