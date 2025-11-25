@@ -1,26 +1,26 @@
-import type { Reviews } from "../../types/index";
-
 interface reviewsProps {
-  reviews: Reviews | null;
+  key?: string;
+  userPhoto: string;
+  userName: string;
+  rating: number;
+  userReview: string;
 }
 
-const ReviewCard = ({ reviews }: reviewsProps) => {
-  console.log(reviews);
+const ReviewCard = ({
+  userPhoto,
+  userName,
+  rating,
+  userReview,
+}: reviewsProps) => {
+  console.log(rating);
 
   return (
     <div className="reviews__card">
       <div className="reviews__avatar">
-        <img
-          src="/img/users/user-7.jpg"
-          alt="Jim Brown"
-          className="reviews__avatar-img"
-        />
-        <h6 className="reviews__user">Jim Brown</h6>
+        <img src={userPhoto} alt={userName} className="reviews__avatar-img" />
+        <h6 className="reviews__user">{userName}</h6>
       </div>
-      <p className="reviews__text">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque
-        dignissimos sint quo commodi corrupti accusantium veniam saepe numquam.
-      </p>
+      <p className="reviews__text">{userReview}</p>
       <div className="reviews__rating">
         <svg className="reviews__star reviews__star--active">
           <use href="img/icons.svg#icon-star"></use>
