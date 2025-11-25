@@ -90,3 +90,21 @@ export interface GuideInfo {
   photo?: string;
   _id?: string;
 }
+
+// 9. Reviews
+
+export interface UserDetails {
+  _id?: string;
+  name: string;
+  photo: string;
+}
+
+export interface Review {
+  _id?: string;
+  id: string;
+  rating: number;
+  review: string;
+  tour: string;
+  createdAt?: string;
+  user: UserDetails;
+}
