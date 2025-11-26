@@ -1,24 +1,34 @@
 // src/context/AuthProvider.tsx
 
-import React, { useState } from "react";
-// Import from the context object file
+import { useState } from "react";
 import type { AuthContextType } from "./AuthContext";
 import { AuthContext } from "./AuthContext";
+import axiosInstance from "../api/axiosInstance";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState<{ name: string; email: string } | null>(
-    null
-  );
+  const [user, setUser] = useState<{
+    name: string;
+    email: string;
+    photo: string;
+  } | null>(null);
 
-  const login = (userData: { name: string; email: string }) => {
+  const login = (userData: { name: string; email: string; photo: string }) => {
     setIsLoggedIn(true);
     setUser(userData);
   };
 
-  const logout = () => {
-    setIsLoggedIn(false);
-    setUser(null);
+  const logout = async () => {
+    try {
+      // Call the backend logout endpoint to clear the JWT cookie
+      await axiosInstance.get("/users/logout");
+    } catch (error) {
+      console.error("Error calling logout endpoint:", error);
+    } finally {
+      // Clear local state regardless of API call result
+      setIsLoggedIn(false);
+      setUser(null);
+    }
   };
 
   const contextValue: AuthContextType = {

@@ -1,21 +1,19 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // 👈 Import useNavigate for redirection
-import axios from "axios"; // 👈 Use AxiosResponse type
+import { useNavigate } from "react-router-dom";
 import type { AxiosResponse } from "axios";
 import { useAuth } from "../hooks/useAuth";
+import axiosInstance from "../api/axiosInstance";
 import type { LoginResponse } from "../types/index";
 
 const Login = () => {
-  // Destructure the login function from the custom hook
   const { login } = useAuth();
-  const navigate = useNavigate(); // Initialize navigate hook
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null); // State for error messages
-  const [isLoading, setIsLoading] = useState(false); // State for loading visual feedback
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Make handleSubmit an async function
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -23,22 +21,16 @@ const Login = () => {
 
     try {
       // 1. Send the login request to the backend
-      const res: AxiosResponse<LoginResponse> = await axios<LoginResponse>({
-        method: "POST",
-        url: "/api/v1/users/login",
-        data: {
+      const res: AxiosResponse<LoginResponse> =
+        await axiosInstance.post<LoginResponse>("/users/login", {
           email,
           password,
-        },
-        withCredentials: true, // Necessary to send and receive HTTP-only cookies
-      });
-
-      console.log(res);
+        });
 
       // 2. Check if the backend response was successful
       if (res.data.status === "success" && res.data.data.user) {
         // 3. Call the global login function from the AuthContext
-        // This updates the global state (isLoggedIn to true, sets user data)
+
         const { name, email: userEmail, photo } = res.data.data.user;
         login({ name, email: userEmail, photo }); // Pass the necessary user data
 
@@ -52,13 +44,18 @@ const Login = () => {
       console.error("Login failed:", err);
 
       // Axios error handling: grab the specific error message from the backend
-      if (axios.isAxiosError(err) && err.response?.data?.message) {
-        setError(err.response.data.message);
+      if (err instanceof Error && "response" in err) {
+        const errorResponse = (
+          err as { response?: { data?: { message?: string } } }
+        ).response;
+        setError(
+          errorResponse?.data?.message ||
+            "An unknown error occurred during login."
+        );
       } else {
         setError("An unknown error occurred during login.");
       }
     } finally {
-      // 6. Always stop loading state
       setIsLoading(false);
     }
   };
@@ -69,7 +66,6 @@ const Login = () => {
         <h2 className="heading-secondary ma-bt-lg">Log into your account</h2>
 
         <form className="form" onSubmit={handleSubmit}>
-          {/* Display error message if present */}
           {error && <div className="error-message">{error}</div>}
 
           <div className="form__group">
@@ -110,7 +106,6 @@ const Login = () => {
               type="submit"
               disabled={isLoading}
             >
-              {/* Show loading text while submitting */}
               {isLoading ? "Logging in..." : "Login"}
             </button>
           </div>

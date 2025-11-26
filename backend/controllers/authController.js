@@ -284,3 +284,31 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
   createSendToken(user, 200, res);
 });
+
+exports.logout = catchAsync(async (req, res, next) => {
+  // Clear the JWT cookie by setting it to expire immediately
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000), // Expires in 10 seconds
+    httpOnly: true,
+  });
+
+  res.status(200).json({
+    status: 'success',
+  });
+});
+
+exports.getMe = catchAsync(async (req, res, next) => {
+  // The protect middleware sets req.user, so we just return it
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    return next(new appError('User not found', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  });
+});
