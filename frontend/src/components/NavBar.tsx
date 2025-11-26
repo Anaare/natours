@@ -3,6 +3,8 @@ import { Link } from "react-router";
 
 const NavBar = () => {
   const { isLoggedIn, user, logout } = useAuth();
+  console.log(user);
+
   return (
     <>
       <nav className="nav nav--tours">
@@ -29,18 +31,15 @@ const NavBar = () => {
         {isLoggedIn ? (
           <>
             {/* Use the logout function */}
-            <a href="#" className="nav__el" onClick={logout}>
+            <Link to="/" className="nav__el" onClick={logout}>
               Log out
-            </a>
-            <Link to="/my-bookings" className="nav__el">
-              My bookings
             </Link>
             <Link to="/me" className="nav__el">
-              {/* <img
-                src={`img/${user?.photo}`} // Assuming user object is available
-                alt="User photo"
+              <img
+                src={`/img/users/${user?.photo}`}
+                alt={`Photo of ${user?.name}`}
                 className="nav__user-img"
-              /> */}
+              />
               <span>{user?.name.split(" ")[0]}</span>
             </Link>
           </>

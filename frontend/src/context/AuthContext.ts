@@ -5,7 +5,7 @@ import { createContext } from "react";
 // 1. Define the TypeScript shape of the context data
 export interface AuthContextType {
   isLoggedIn: boolean;
-  user: { name: string; email: string } | null;
+  user: { name: string; email: string; photo: string } | null;
   login: (userData: { name: string; email: string; photo: string }) => void;
   logout: () => void;
 }
