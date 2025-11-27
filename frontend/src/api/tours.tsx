@@ -1,5 +1,5 @@
 // api/tours.ts
-import type { Tour } from "../types";
+import type { Tour } from "../types/index";
 
 export const fetchTourDataBySlug = async (slug: string) => {
   const res = await fetch(`http://127.0.0.1:3000/api/v1/tours/slug/${slug}`);

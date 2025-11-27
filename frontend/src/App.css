@@ -1189,15 +1189,26 @@ body {
   align-self: center;
 }
 
+/* NEW */
+.main--error {
+  min-height: calc(100vh - 8rem - 9rem);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
 .error {
-  position: absolute;
+  /* position: absolute;
   top: 35%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
   max-width: 80rem;
   text-align: center;
 }
+
 .error__title {
   display: -webkit-box;
   display: -ms-flexbox;

@@ -9,6 +9,7 @@ import { useFetchSingleTour } from "../hooks/useFetchSingleTour";
 import Pictures from "../components/tour-components/Pictures";
 import Reviews from "../components/tour-components/Reviews";
 import Map from "../components/tour-components/Map";
+import Error from "../components/Error";
 
 const Tour = () => {
   const { tour, loading, error } = useFetchSingleTour();
@@ -20,7 +21,7 @@ const Tour = () => {
   }, [tour]);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) return <Error errorMsg="There is no tour with that name." />;
   if (!tour) return <p>No tour found</p>;
 
   return (
