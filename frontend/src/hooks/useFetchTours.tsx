@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { ApiResponse, Tour } from "../types";
+import type { ApiResponse, Tour } from "../types/index";
 
 export const useFetchTours = () => {
   const [tours, setTours] = useState<Tour[]>([]);

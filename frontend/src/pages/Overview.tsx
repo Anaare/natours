@@ -1,8 +1,14 @@
 import { useFetchTours } from "../hooks/useFetchTours";
 import Card from "../components/overview-components/Card";
+import Error from "../components/Error";
 
 const Overview = () => {
-  const { tours } = useFetchTours();
+  const { tours, error } = useFetchTours();
+
+  if (error) {
+    // Pass the actual error message
+    return <Error errorMsg="" />;
+  }
 
   return (
     <>

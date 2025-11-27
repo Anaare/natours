@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import type { Tour } from "../types";
+import type { Tour } from "../types/index";
 
 export const useFetchSingleTour = () => {
   const [tour, setTour] = useState<Tour | null>(null);

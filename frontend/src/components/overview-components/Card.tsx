@@ -1,4 +1,3 @@
-// import { Link } from "react-router";
 import { Link } from "react-router";
 import type { Tour } from "../../types/index";
 
