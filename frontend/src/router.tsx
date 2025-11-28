@@ -4,6 +4,7 @@ import Overview from "./pages/Overview.tsx";
 import Tour from "./pages/Tour.tsx";
 import Login from "./components/Login.tsx";
 import Signup from "./components/Signup.tsx";
+import User from "./pages/User.tsx";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
+      },
+      {
+        path: "/me",
+        element: <User />,
       },
     ],
   },
