@@ -1,6 +1,6 @@
 // src/context/AuthProvider.tsx
 
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import type { AuthContextType } from "./AuthContext";
 import { AuthContext } from "./AuthContext";
 import axiosInstance from "../api/axiosInstance";
@@ -13,12 +13,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     photo: string;
   } | null>(null);
 
-  const login = (userData: { name: string; email: string; photo: string }) => {
-    setIsLoggedIn(true);
-    setUser(userData);
-  };
+  const login = useCallback(
+    (userData: { name: string; email: string; photo: string }) => {
+      setIsLoggedIn(true);
+      setUser(userData);
+    },
+    [],
+  );
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       // Call the backend logout endpoint to clear the JWT cookie
       await axiosInstance.get("/users/logout");
@@ -29,14 +32,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsLoggedIn(false);
       setUser(null);
     }
-  };
+  }, []);
 
-  const contextValue: AuthContextType = {
-    isLoggedIn,
-    user,
-    login,
-    logout,
-  };
+  const contextValue: AuthContextType = useMemo(
+    () => ({ isLoggedIn, user, login, logout }),
+    [isLoggedIn, user, login, logout],
+  );
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
