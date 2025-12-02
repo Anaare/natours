@@ -108,3 +108,45 @@ export interface Review {
   createdAt?: string;
   user: UserDetails;
 }
+
+/* 
+{
+  "_id": {
+    "$oid": "5c8a1d5b0190b214360dc057"
+  },
+  "name": "Jonas Schmedtmann",
+  "email": "admin@natours.io",
+  "photo": "user-1.jpg",
+  "role": "admin",
+  "password": "$2a$12$Q0grHjH9PXc6SxivC8m12.2mZJ9BbKcgFpwSG4Y1ZEII8HJVzWeyS",
+  "active": true,
+  "__v": 0
+}
+*/
+
+export interface User {
+  _id?: string;
+  name: string;
+  email: string;
+  photo: string;
+  role: string;
+  password: string;
+  active: boolean;
+  __v: number;
+}
+
+export interface UsersApiResponse {
+  status: "success" | string;
+  results: number;
+  data: {
+    doc: User[];
+  };
+}
+
+export interface UserApiResponse {
+  status: "success" | string;
+  results: number;
+  data: {
+    user: User;
+  };
+}

@@ -1,14 +1,14 @@
 import { Outlet } from "react-router";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import { useAuthInit } from "./hooks/useAuthInit";
+// import { useAuthInit } from "./hooks/useAuthInit";
 
 import "./App.css";
-import { AuthProvider } from "./context/AuthProvider";
+
+import { UserContextProvider } from "./context/UserContextProvider";
 
 function AppContent() {
-  // Initialize auth state on app load (fetch current user if logged in)
-  useAuthInit();
+  // useAuthInit();
 
   return (
     <>
@@ -21,9 +21,9 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
+    <UserContextProvider>
       <AppContent />
-    </AuthProvider>
+    </UserContextProvider>
   );
 }
 

@@ -1,19 +1,18 @@
-// import { useNavigate } from "react-router-dom";
-// import type { AxiosResponse } from "axios";
-// import { useAuth } from "../hooks/useAuth";
-// import axiosInstance from "../api/axiosInstance";
-// import type { LoginResponse } from "../types/index";
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import type { AxiosResponse } from "axios";
 import { useAuth } from "../hooks/useAuth";
+import axiosInstance from "../api/axiosInstance";
+import type { LoginResponse } from "../types/index";
 
 const Login = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,11 +20,42 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      await login(email, password);
-      setEmail("");
-      setPassword("");
-    } catch (error) {
-      setError((error as Error).message);
+      // 1. Send the login request to the backend
+      const res: AxiosResponse<LoginResponse> =
+        await axiosInstance.post<LoginResponse>("/users/login", {
+          email,
+          password,
+        });
+
+      // 2. Check if the backend response was successful
+      if (res.data.status === "success" && res.data.data.user) {
+        // 3. Call the global login function from the AuthContext
+
+        const { name, email: userEmail, photo, _id } = res.data.data.user;
+        login({ name, email: userEmail, photo, _id }); // Pass the necessary user data
+
+        // console.log(res.data.data.user);
+        console.log("Login successful! Redirecting...");
+
+        // 4. Redirect the user to the homepage or dashboard
+        navigate("/");
+      }
+    } catch (err) {
+      // 5. Handle any network or API errors
+      console.error("Login failed:", err);
+
+      // Axios error handling: grab the specific error message from the backend
+      if (err instanceof Error && "response" in err) {
+        const errorResponse = (
+          err as { response?: { data?: { message?: string } } }
+        ).response;
+        setError(
+          errorResponse?.data?.message ||
+            "An unknown error occurred during login."
+        );
+      } else {
+        setError("An unknown error occurred during login.");
+      }
     } finally {
       setIsLoading(false);
     }
