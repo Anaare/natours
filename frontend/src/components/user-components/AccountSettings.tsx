@@ -36,7 +36,7 @@ const AccountSettings = () => {
         <div className="form__group form__photo-upload">
           <img
             className="form__user-photo"
-            src="img/user.jpg"
+            src="/img/users/user-1.jpg"
             alt="User photo"
           />
           {/* Using a standard button/input for file upload in a real app, 
