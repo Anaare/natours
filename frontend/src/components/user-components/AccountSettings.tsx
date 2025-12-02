@@ -1,4 +1,28 @@
+import { useAuth } from "../../hooks/useAuth";
+
 const AccountSettings = () => {
+  const { user, loading, error } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="user-view__form-container">
+        <h2 className="heading-secondary ma-bt-md">
+          Loading account settings...
+        </h2>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="user-view__form-container">
+        <h2 className="heading-secondary ma-bt-md text-red-600">
+          Error loading data: {error}
+        </h2>
+      </div>
+    );
+  }
+
   return (
     <div className="user-view__form-container">
       <h2 className="heading-secondary ma-bt-md">Your account settings</h2>
@@ -13,7 +37,7 @@ const AccountSettings = () => {
             id="name"
             className="form__input"
             type="text"
-            defaultValue="Jonas Schmedtmann"
+            defaultValue={user?.name || ""}
             required
           />
         </div>
@@ -27,7 +51,7 @@ const AccountSettings = () => {
             id="email"
             className="form__input"
             type="email"
-            defaultValue="admin@natours.io"
+            defaultValue={user?.email || ""}
             required
           />
         </div>
@@ -36,7 +60,7 @@ const AccountSettings = () => {
         <div className="form__group form__photo-upload">
           <img
             className="form__user-photo"
-            src="/img/users/user-1.jpg"
+            src={`/img/users/${user?.photo}`}
             alt="User photo"
           />
           {/* Using a standard button/input for file upload in a real app, 
