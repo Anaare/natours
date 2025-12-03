@@ -8,34 +8,34 @@ A full-stack web application for browsing and booking nature tours. The backend 
 
 ## 🔐 Authentication & User Management
 
-✅ User signup and login
-✅ JWT-based authentication
-✅ Secure cookies
-✅ Update user data (name, email, password)
+- User signup and login
+- JWT-based authentication
+- Secure cookies
+- Update user data (name, email, password)
 
 ## 🌍 Tours
 
-✅ Browse all tours
-✅ View single tour details
-✅ Fully RESTful API for tours (CRUD functionality on backend)
+- Browse all tours
+- View single tour details
+- Fully RESTful API for tours (CRUD functionality on backend)
 
 ## 📸 UI & Frontend
 
-✅ React + TypeScript recreation of the original Pug-based UI
-✅ Modern component structure
-✅ Dynamic pages for overview, tour details, etc.
-✅ Centralized fetching logic
-✅ Clean routing with React Router
-✅ Styled to closely replicate the original Natours design
+- React + TypeScript recreation of the original Pug-based UI
+- Modern component structure
+- Dynamic pages for overview, tour details, etc.
+- Centralized fetching logic
+- Clean routing with React Router
+- Styled to closely replicate the original Natours design
 
 ## 🗄️ Backend
 
-✅ REST API using Express
-✅ MongoDB database using Mongoose
-✅ API features: filtering, sorting, pagination
-✅ Authentication, authorization, password reset
-✅ Error handling with custom AppError class
-✅ Security middleware (rate limiting, sanitization, etc.)
+- REST API using Express
+- MongoDB database using Mongoose
+- API features: filtering, sorting, pagination
+- Authentication, authorization, password reset
+- Error handling with custom AppError class
+- Security middleware (rate limiting, sanitization, etc.)
 
 ## Demo
 
@@ -47,20 +47,20 @@ A full-stack web application for browsing and booking nature tours. The backend 
 
 ### Frontend
 
-✅ React.js + TypeScript
-✅ React Router
-✅ CSS
-✅ Custom hooks for fetching
-✅ Component-based architecture
-✅ React Context
+- React.js + TypeScript
+- React Router
+- CSS
+- Custom hooks for fetching
+- Component-based architecture
+- React Context
 
 ### Backend
 
-✅ Node.js & Express
-✅ MongoDB + Mongoose
-✅ JWT authentication
-✅ Nodemailer for emails (e.g., password reset)
-✅ MVC architecture
+- Node.js & Express
+- MongoDB + Mongoose
+- JWT authentication
+- Nodemailer for emails (e.g., password reset)
+- MVC architecture
 
 ### Deployment
 
@@ -116,22 +116,22 @@ npm run dev
 
 ### 🌍 Browse Tours
 
-✅ Visit the home page (Overview) to see a list of tours.
-✅ Click any tour card to view its full details.
+- Visit the home page (Overview) to see a list of tours.
+- Click any tour card to view its full details.
 
 ### 👤 Manage Account
 
-✅ Log in or sign up
-✅ Update name, email, and password
-✅ View your user details
+- Log in or sign up
+- Update name, email, and password
+- View your user details
 
 ### 🔐 Protected Routes
 
-✅ Some pages require authentication
-✅ JWT token stored in HTTP-only cookies
+- Some pages require authentication
+- JWT token stored in HTTP-only cookies
 
 ## Notes
 
-✅ This project is based on the Natours app from Jonas Schmedtmann’s Node.js course.
-✅ I rebuilt the entire frontend UI from Pug templates into a modern React/TypeScript application to make the project more scalable and maintainable.
-✅ The backend structure follows the original MVC layout, with improvements where needed.
+- This project is based on the Natours app from Jonas Schmedtmann’s Node.js course.
+- I rebuilt the entire frontend UI from Pug templates into a modern React/TypeScript application to make the project more scalable and maintainable.
+- The backend structure follows the original MVC layout, with improvements where needed.
