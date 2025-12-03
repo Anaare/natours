@@ -1,80 +1,58 @@
+import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { useUpdateUser } from "../../hooks/useUpdateUser";
 
 const AccountSettings = () => {
-  const { user, loading, error } = useAuth();
+  const { user } = useAuth();
+  const [name, setName] = useState(user?.name ?? "");
+  const [email, setEmail] = useState(user?.email ?? "");
 
-  if (loading) {
-    return (
-      <div className="user-view__form-container">
-        <h2 className="heading-secondary ma-bt-md">
-          Loading account settings...
-        </h2>
-      </div>
-    );
-  }
+  const {
+    updateUser,
+    // updatedUser,
+    loading: updating,
+    error: updateError,
+  } = useUpdateUser();
 
-  if (error) {
-    return (
-      <div className="user-view__form-container">
-        <h2 className="heading-secondary ma-bt-md text-red-600">
-          Error loading data: {error}
-        </h2>
-      </div>
-    );
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!user) return;
+
+    await updateUser(user._id, { name, email });
+  };
 
   return (
     <div className="user-view__form-container">
       <h2 className="heading-secondary ma-bt-md">Your account settings</h2>
 
-      <form className="form form-user-data">
-        {/* Name Field */}
+      <form className="form form-user-data" onSubmit={handleSubmit}>
         <div className="form__group">
-          <label className="form__label" htmlFor="name">
-            Name
-          </label>
+          <label className="form__label">Name</label>
           <input
-            id="name"
             className="form__input"
-            type="text"
-            defaultValue={user?.name || ""}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
 
-        {/* Email Field */}
-        <div className="form__group ma-bt-md">
-          <label className="form__label" htmlFor="email">
-            Email address
-          </label>
+        <div className="form__group">
+          <label className="form__label">Email</label>
           <input
-            id="email"
             className="form__input"
             type="email"
-            defaultValue={user?.email || ""}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
 
-        {/* Photo Upload Group */}
-        <div className="form__group form__photo-upload">
-          <img
-            className="form__user-photo"
-            src={`/img/users/${user?.photo}`}
-            alt="User photo"
-          />
-          {/* Using a standard button/input for file upload in a real app, 
-                but keeping the original structure with 'a.btn-text' for now. 
-                This would typically be a hidden <input type="file" /> associated with a <label> */}
-          <a className="btn-text" href="#">
-            Choose new photo
-          </a>
-        </div>
+        <button className="btn btn--small btn--green">
+          {updating ? "Saving..." : "Save settings"}
+        </button>
 
-        {/* Save Settings Button */}
-        <div className="form__group right">
-          <button className="btn btn--small btn--green">Save settings</button>
-        </div>
+        {updateError && <p className="text-red-600 mt-2">{updateError}</p>}
       </form>
     </div>
   );
