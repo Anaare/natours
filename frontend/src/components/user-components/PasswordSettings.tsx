@@ -8,12 +8,7 @@ const PasswordSettings = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  const {
-    updateUser,
-    // updatedUser,
-    loading: updating,
-    error: updateError,
-  } = useUpdatePassword();
+  const { updateUser } = useUpdatePassword();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
