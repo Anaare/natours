@@ -21,33 +21,33 @@ const app = express();
 
 // app.use is a METHOD used to MOUNT middleware functions!!!
 
-console.log('FRONTEND_URL:', process.env.FRONTEND_URL);
-
 // Set security HTTP headers
 app.use(helmet());
 
+// Cookie parser
+app.use(cookieParser());
+
 // Configuring CORS
-const allowedOrigins = [process.env.FRONTEND_URL];
 
-if (process.env.NODE_ENV === 'development') {
-  allowedOrigins.push('http://localhost:5173');
-  allowedOrigins.push('http://127.0.0.1:5173');
-}
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  process.env.FRONTEND_URL,
+];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    return callback(new Error('Not allowed by CORS'), false);
-  },
-  credentials: true,
-};
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow mobile/postman
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      console.log('❌ BLOCKED BY CORS:', origin);
+      return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  }),
+);
 
-app.use(cors(corsOptions));
-
-app.options('*', cors(corsOptions));
+app.options('*', cors());
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -73,7 +73,7 @@ app.use(
 );
 
 // Cookie Parser
-app.use(cookieParser());
+// app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection (Someone is ABLE to login without knowing email)
 app.use(mongoSanitize());

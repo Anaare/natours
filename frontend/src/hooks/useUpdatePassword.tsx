@@ -17,15 +17,14 @@ export const useUpdatePassword = () => {
     setError(null);
 
     try {
-      const res = await fetch(
-        `https://natours-x62c.onrender.com/api/v1/users/updateMyPassword`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(payload),
-        }
-      );
+      const API_URL = import.meta.env.VITE_API_URL;
+
+      const res = await fetch(`${API_URL}/api/v1/users/updateMyPassword`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      });
 
       if (!res.ok) {
         throw new Error(`Update failed (${res.status})`);
