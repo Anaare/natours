@@ -76,29 +76,49 @@ A full-stack web application for browsing and booking nature tours. The backend 
 
 ## Getting Started
 
-1. Clone the repo and navigate to the project root:
-      `bash
-   git clone [https://github.com/Anaare/natours.git](https://github.com/Anaare/natours.git)
-   cd natours
-   `
-2. Install Backend Dependencies:
-      `bash
-   cd backend
-   npm install
-   cd ..
-   `
-3. Install Frontend Dependencies:
-      `bash
-   cd frontend
-   npm install
-   cd ..
-   `
-4. Create Backend Environment Variables: (Keep this step)
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/Anaare/natours.git
+   cd natours
+   ```
+2. Install Dependencies:
+   ```bash
+   npm install
+   ```
+3. Create Backend Environment Variables:
+
+   - Create a config.env file inside the /backend folder.
+
+   ```env
+   NODE_ENV=development
+   PORT=3000
+   DATABASE=your_mongodb_connection_string
+   DATABASE_PASSWORD=your_db_password
+
+   JWT_SECRET=your_jwt_secret
+   JWT_EXPIRES_IN=90d
+   JWT_COOKIE_EXPIRES_IN=90
+
+   EMAIL_USERNAME=your_email_username
+   EMAIL_PASSWORD=your_email_password
+   EMAIL_HOST=your_host
+   EMAIL_PORT=your_port
+   ```
+
+4. Install frontend dependencies
+
+```bash
+cd ../frontend
+npm install
+```
+
 5. Run the app (frontend and backend together):
-      `bash
-   # Assuming your package.json in the project root runs both servers concurrently
-   npm run dev
-   `
+
+```bash
+npm run dev
+```
+
+6. Open your browser to http://localhost:5173
 
 ## Usage
 
