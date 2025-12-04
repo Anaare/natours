@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 const NavBar = () => {
   const { user, logout, isLoggedIn } = useAuth();
-  console.log(user);
+  console.log("API_URL:", import.meta.env.VITE_API_URL);
 
   return (
     <>

@@ -16,9 +16,10 @@ export const useFetchReviews = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch(
-          `https://natours-x62c.onrender.com/api/v1/tours/${tour._id}/reviews`
-        );
+
+        const API_URL = import.meta.env.VITE_API_URL;
+
+        const res = await fetch(`${API_URL}/api/v1/tours/${tour._id}/reviews`);
 
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);

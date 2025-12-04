@@ -1,9 +1,8 @@
 import axios from "axios";
 
-// Create a centralized axios instance with credentials enabled by default
 export const axiosInstance = axios.create({
-  withCredentials: true, // Automatically send cookies with every request
-  baseURL: "/api/v1", // Base URL for all requests
+  baseURL: import.meta.env.VITE_API_URL + "/api/v1",
+  withCredentials: true,
 });
 
 export default axiosInstance;

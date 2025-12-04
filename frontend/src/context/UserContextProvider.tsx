@@ -22,14 +22,12 @@ export const UserContextProvider = ({
 
       try {
         // 1. Send credentials to your secure LOGIN endpoint
-        const response = await fetch(
-          "https://natours-x62c.onrender.com/api/v1/users/login",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          }
-        );
+        const API_URL = import.meta.env.VITE_API_URL;
+        const response = await fetch(`${API_URL}/api/v1/users/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
 
         // Handle non-2xx responses
         if (!response.ok) {

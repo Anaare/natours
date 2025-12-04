@@ -14,16 +14,13 @@ export const useFetchUser = (email: string, password: string) => {
     if (!email || !password) return;
     const fetchUser = async () => {
       try {
-        const res = await fetch(
-          "https://natours-x62c.onrender.com/api/v1/users/login",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-          }
-        );
+        const API_URL = import.meta.env.VITE_API_URL;
+        const res = await fetch(`${API_URL}/api/v1/users/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ email, password }),
+        });
 
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
@@ -42,7 +39,7 @@ export const useFetchUser = (email: string, password: string) => {
     };
 
     fetchUser();
-  }, [email, user, password]);
+  }, [email, password]);
 
   return { user, loading, error };
 };
