@@ -19,7 +19,7 @@ const AccountSettings = () => {
 
     if (!user) return;
 
-    await updateUser(user._id, { name, email });
+    await updateUser(user._id ?? "", { name, email });
   };
 
   return (

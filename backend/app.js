@@ -25,12 +25,16 @@ const app = express();
 app.use(helmet());
 
 // Configuring CORS
+
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:5173',
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    origin: allowedOrigins,
     credentials: true,
-    optionsSuccessStatus: 200,
   }),
 );
 
