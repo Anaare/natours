@@ -1,5 +1,5 @@
 import UserContent from "../components/user-components/UserContent";
-import UserNav from "../components/user-components/userNav";
+import UserNav from "../components/user-components/UserNav";
 
 const User = () => {
   return (
