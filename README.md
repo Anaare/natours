@@ -39,7 +39,8 @@ A full-stack web application for browsing and booking nature tours. The backend 
 
 ## Demo
 
-🔗 **Live Demo**: https://natours-v1-inky.vercel.app/
+🔗 **Live Application (Frontend)**: https://natours-v1-inky.vercel.app/
+🔗 **API Endpoint (Backend)**: https://natours-x62c.onrender.com
 
 ---
 
