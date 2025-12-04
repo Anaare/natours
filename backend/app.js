@@ -25,34 +25,29 @@ const app = express();
 app.use(helmet());
 
 // Configuring CORS
-
-// Recommended CORS Logic for handling Production/Development
 const allowedOrigins = [process.env.FRONTEND_URL];
 
-// If not in production, also allow localhost for local development
 if (process.env.NODE_ENV === 'development') {
   allowedOrigins.push('http://localhost:5173');
   allowedOrigins.push('http://127.0.0.1:5173');
 }
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'), false);
+  },
+  credentials: true,
+};
 
-      // Check if the requesting origin is in the allowed list
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        // Log an error if an unauthorized domain tries to access the API
-        callback(new Error('Not allowed by CORS'), false);
-      }
-    },
-    credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  }),
-);
+app.use(cors(corsOptions));
+
+app.options('*', cors(corsOptions));
+
+///////////////////////////////////////////////////////////////////////////
 
 // Development logging in a console
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
