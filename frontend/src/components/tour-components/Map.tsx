@@ -11,18 +11,15 @@ interface MapboxMap {
 
 interface Location {
   type: string;
-  coordinates: [number, number]; // Tuple: [longitude, latitude]
+  coordinates: [number, number];
   day: number;
   description: string;
-  _id?: string; // Optional, if your DB sends IDs
+  _id?: string;
 }
 
 const Map = () => {
   const { tour } = useFetchSingleTour();
-
-  // 1. Ref for the HTML container
   const mapContainerRef = useRef(null);
-  // 2. Ref to store the Mapbox instance (Prevents duplicates)
   const mapInstanceRef = useRef<MapboxMap | null>(null);
 
   useEffect(() => {
@@ -30,7 +27,7 @@ const Map = () => {
     if (!tour || !mapContainerRef.current) return;
     if (mapInstanceRef.current) return; // <--- BLOCKS DUPLICATE RENDERS
 
-    const locations = tour.locations;
+    const locations = tour.locations as Location[]; // Cast to the corrected Location[]
 
     if (locations && locations.length > 0) {
       mapboxgl.accessToken =
