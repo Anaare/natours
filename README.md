@@ -39,7 +39,7 @@ A full-stack web application for browsing and booking nature tours. The backend 
 
 ## Demo
 
-**Live demo:**
+🔗 **Live Demo**: https://natours-v1-inky.vercel.app/
 
 ---
 
