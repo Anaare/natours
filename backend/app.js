@@ -21,6 +21,8 @@ const app = express();
 
 // app.use is a METHOD used to MOUNT middleware functions!!!
 
+console.log('Loaded FRONTEND_URL:', process.env.FRONTEND_URL);
+
 // Set security HTTP headers
 app.use(helmet());
 
