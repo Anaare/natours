@@ -11,7 +11,9 @@ export const useFetchUsers = () => {
       try {
         setLoading(true);
 
-        const res = await fetch("http://127.0.0.1:3000/api/v1/users");
+        const res = await fetch(
+          "https://natours-x62c.onrender.com/api/v1/users"
+        );
 
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);

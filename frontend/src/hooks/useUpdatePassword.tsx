@@ -18,7 +18,7 @@ export const useUpdatePassword = () => {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:3000/api/v1/users/updateMyPassword`,
+        `https://natours-x62c.onrender.com/api/v1/users/updateMyPassword`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
