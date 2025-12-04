@@ -1,10 +1,16 @@
 import { useFetchReviews } from "../../hooks/useFetchReviews";
 import ReviewCard from "./ReviewCard";
-import type { Review } from "../../types/index";
 
 const Reviews = () => {
-  const { reviews } = useFetchReviews() as { reviews: Review[] };
-  console.log(reviews);
+  const { reviews, loading, error } = useFetchReviews();
+
+  if (loading) {
+    return <p>Loading reviews...</p>;
+  }
+
+  if (error) {
+    return <p className="error">Error loading reviews: {error}</p>;
+  }
 
   if (!reviews || reviews.length === 0) return null;
 

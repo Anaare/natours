@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 
-import type { Reviews } from "../types";
+import type { Review } from "../types";
 import { useFetchSingleTour } from "./useFetchSingleTour";
 
 export const useFetchReviews = () => {
-  const [reviews, setReview] = useState<Reviews | null>(null);
+  const [reviews, setReviews] = useState<Review[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { tour } = useFetchSingleTour();
 
   useEffect(() => {
-    // 3️⃣ Fetch that specific tour by ID
     const fetchReviews = async () => {
+      if (!tour?._id) return;
+
       try {
         setLoading(true);
+        setError(null);
         const res = await fetch(
-          `http://127.0.0.1:3000/api/v1/tours/${tour?._id}/reviews`
+          `http://127.0.0.1:3000/api/v1/tours/${tour._id}/reviews`
         );
 
         if (!res.ok) {
@@ -23,12 +25,19 @@ export const useFetchReviews = () => {
         }
 
         const json = await res.json();
-        const tourData = json.data.doc || json.data.tour || json.data;
-        setReview(tourData);
+
+        const reviewsArray: Review[] = json.data.doc;
+
+        if (Array.isArray(reviewsArray)) {
+          setReviews(reviewsArray);
+        } else {
+          throw new Error("Invalid review data structure received from API.");
+        }
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "An unknown error occurred"
         );
+        setReviews(null);
       } finally {
         setLoading(false);
       }
