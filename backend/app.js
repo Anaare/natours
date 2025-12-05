@@ -40,7 +40,6 @@ app.use(
     origin: function (origin, callback) {
       if (!origin) return callback(null, true); // allow mobile/postman
       if (allowedOrigins.includes(origin)) return callback(null, true);
-      console.log('❌ BLOCKED BY CORS:', origin);
       return callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
@@ -102,7 +101,6 @@ app.use(express.static(`${__dirname}/public`));
 // Test Middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(req.cookies);
 
   next();
 });

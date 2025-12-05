@@ -1,6 +1,8 @@
 const express = require('express');
+const multer = require('multer');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
+const upload = require('../utils/upload');
 
 const router = express.Router();
 
@@ -14,9 +16,8 @@ router.patch('/resetPassword/:token', authController.resetPassword);
 // data in front part of the app
 
 // Mounting protect middleware to protect ALL routes that comes after it
-// router.use(authController.protect);
+router.use(authController.protect);
 
-router.get('/me', authController.getMe);
 router.patch(
   '/updateMyPassword',
 
@@ -29,7 +30,7 @@ router.get(
   userController.getMe,
   userController.getUser,
 );
-router.patch('/updateMe'); //userController.updateMe
+router.patch('/updateMe', upload.single('photo'), userController.updateMe);
 router.delete('/deleteMe', userController.deleteMe);
 
 // router.use(authController.restrictTo('admin'));
