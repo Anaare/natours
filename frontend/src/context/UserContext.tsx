@@ -8,6 +8,7 @@ export interface UserContextType {
   isLoggedIn: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  updateUserContext: (updatedUser: User) => void;
 }
 
 export const UserContext = createContext<UserContextType | undefined>(
