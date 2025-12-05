@@ -15,6 +15,10 @@ export const UserContextProvider = ({
 
   const navigate = useNavigate();
 
+  const updateUserContext = useCallback((updatedUser: User) => {
+    setUser(updatedUser);
+  }, []);
+
   const login = useCallback(
     async (email: string, password: string) => {
       setError(null);
@@ -78,8 +82,9 @@ export const UserContextProvider = ({
       isLoggedIn,
       login,
       logout,
+      updateUserContext,
     }),
-    [user, loading, error, login, logout, isLoggedIn]
+    [user, loading, error, login, logout, isLoggedIn, updateUserContext]
   );
 
   return (

@@ -35,7 +35,7 @@ const NavBar = () => {
             </Link>
             <Link to="/me" className="nav__el">
               <img
-                src={`/img/users/${user?.photo}`}
+                src={`${user?.photo}`}
                 alt={`Photo of ${user?.name}`}
                 className="nav__user-img"
               />
