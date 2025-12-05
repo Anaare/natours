@@ -56,7 +56,7 @@ const createSendToken = (user, statusCode, res) => {
     ),
     httpOnly: true,
     secure: isProduction,
-    sameSite: 'lax',
+    sameSite: isProduction ? 'none' : 'lax',
   };
 
   res.cookie('jwt', token, cookieOptions);
@@ -128,6 +128,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // 3) Check if user still exists
   const currentUser = await User.findById(decoded.id);
+
   if (!currentUser) {
     return next(
       new appError(

@@ -7,19 +7,14 @@ const AccountSettings = () => {
   const [name, setName] = useState(user?.name ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
 
-  const {
-    updateUser,
-    // updatedUser,
-    loading: updating,
-    error: updateError,
-  } = useUpdateUser();
+  const { updateUser, loading: updating, error: updateError } = useUpdateUser();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!user) return;
 
-    await updateUser(user._id ?? "", { name, email });
+    await updateUser({ name, email });
   };
 
   return (

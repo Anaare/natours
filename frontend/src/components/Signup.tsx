@@ -42,17 +42,11 @@ const Signup = () => {
       // 2. Check if the backend response was successful
       if (res.data.status === "success" && res.data.data.user) {
         console.log("Signup successful! Redirecting...");
-        // You had console.log(name, email) but 'name' is not defined. Using 'username' instead.
-        console.log(username, email);
 
         // 4. Redirect the user to the homepage or dashboard
         navigate("/");
       }
     } catch (err) {
-      console.error("Signup failed:", err);
-
-      // Enhanced error handling to correctly extract the message from AxiosError
-      // Axios errors often have the response structure needed to get the backend message.
       if (err && typeof err === "object" && "response" in err) {
         // We can safely cast err to a more specific type to access the response property
         const axiosError = err as {

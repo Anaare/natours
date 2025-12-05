@@ -26,6 +26,7 @@ export const UserContextProvider = ({
         const response = await fetch(`${API_URL}/api/v1/users/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({ email, password }),
         });
 

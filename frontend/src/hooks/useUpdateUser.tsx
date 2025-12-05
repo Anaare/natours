@@ -11,25 +11,31 @@ export const useUpdateUser = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const updateUser = async (userId: string, payload: UpdatePayload) => {
+  const updateUser = async (payload: UpdatePayload) => {
     setLoading(true);
     setError(null);
 
     try {
       const API_URL = import.meta.env.VITE_API_URL;
 
-      const res = await fetch(`${API_URL}/api/v1/users/${userId}`, {
+      // const res = await fetch(`${API_URL}/api/v1/users/${userId}`, {
+      //   method: "PATCH",
+      //   headers: { "Content-Type": "application/json" },
+      //   credentials: "include", // IMPORTANT for auth cookies
+      //   body: JSON.stringify(payload),
+      // });
+      const res = await fetch(`${API_URL}/api/v1/users/updateMe`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // IMPORTANT for auth cookies
         body: JSON.stringify(payload),
       });
-
       if (!res.ok) {
         throw new Error(`Update failed (${res.status})`);
       }
 
       const data: UserApiResponse = await res.json();
+      console.log(data);
 
       setUpdatedUser(data.data.user);
       return data.data.user;
