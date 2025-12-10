@@ -2,6 +2,7 @@ const express = require('express');
 const tourController = require('../controllers/tourController');
 const authController = require('../controllers/authController');
 const reviewRouter = require('./../routes/reviewRoutes');
+const { uploadTourImages } = require('../utils/upload');
 
 /* 
 tourController is an object containing all functions that I exported 
@@ -51,6 +52,10 @@ router
   .patch(
     authController.protect,
     authController.restrictTo('admin', 'lead-guide'),
+    uploadTourImages.fields([
+      { name: 'imageCover', maxCount: 1 },
+      { name: 'images', maxCount: 3 },
+    ]),
     tourController.updateTour,
   )
   .delete(

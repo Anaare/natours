@@ -71,7 +71,13 @@ const AccountSettings = () => {
           <div className="form__photo-upload">
             <img
               className="form__user-photo"
-              src={user?.photo || "/img/users/default.jpg"}
+              src={
+                user?.photo
+                  ? user.photo.startsWith("http")
+                    ? user.photo
+                    : `/img/users/${user.photo}`
+                  : "/img/users/default.jpg"
+              }
               alt="User photo"
             />
 

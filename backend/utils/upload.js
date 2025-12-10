@@ -9,17 +9,29 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Storage Creation
-const storage = new CloudinaryStorage({
+// 1. Storage for USERS (Profile Picture)
+const userStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'natours-users',
     allowed_formats: ['jpeg', 'png', 'jpg'],
   },
 });
-
-const upload = multer({
-  storage: storage,
+// 2. Storage for TOURS (Cover Image + Gallery Images)
+const tourStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'natours-tours', // A dedicated folder for tours
+    allowed_formats: ['jpeg', 'png', 'jpg'],
+  },
 });
 
-module.exports = upload;
+// Multer instance for User Profile Photos (Single file)
+exports.uploadUserPhoto = multer({
+  storage: userStorage,
+});
+
+// Multer instance for Tour Photos (Multiple files)
+exports.uploadTourImages = multer({
+  storage: tourStorage,
+});

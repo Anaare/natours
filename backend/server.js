@@ -12,6 +12,8 @@ dotenv.config({ path: './config.env' });
 
 const app = require('./app');
 
+// app.use('/img/users', express.static(path.join(__dirname, 'public/img/users')));
+
 let server;
 mongoose
   .connect(process.env.DATABASE)

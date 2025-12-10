@@ -4,6 +4,50 @@ const catchAsync = require('../utils/catchAsync');
 
 const factory = require('./handlerFactory');
 
+const executeUpdate = async (req, res, next, Model) => {
+  const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!doc) {
+    return next(new appError('No document found with that ID', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      doc,
+    },
+  });
+};
+
+// 🔑 Custom UpdateTour Function
+exports.updateTour = catchAsync(async (req, res, next) => {
+  // 1. CHECK IF FILES WERE UPLOADED
+  if (req.files) {
+    // 1a. Process imageCover (Field name: imageCover, maxCount: 1)
+    if (req.files.imageCover && req.files.imageCover.length) {
+      // Multer stores the URL in the .path property
+      req.body.imageCover = req.files.imageCover[0].path;
+    }
+
+    // 1b. Process images (Field name: images, maxCount: 3)
+    if (req.files.images && req.files.images.length) {
+      // Map the array of file objects to an array of URLs
+      const galleryUrls = req.files.images.map((file) => file.path);
+
+      // Add the array of URLs to the request body
+      req.body.images = galleryUrls;
+    }
+  }
+
+  // 2. PASS CONTROL TO THE GENERIC UPDATE LOGIC
+  // Now req.body contains the updated fields (including the new URL(s)),
+  // and we can run the standard update logic.
+  await executeUpdate(req, res, next, Tour);
+});
+
 exports.aliasTopTours = (req, res, next) => {
   req.url =
     '/?sort=-ratingsAverage,price&fields=ratingsAverage,price,name,difficulty,summary&limit=5';
@@ -14,7 +58,7 @@ exports.aliasTopTours = (req, res, next) => {
 exports.getAllTours = factory.getAll(Tour);
 exports.getTour = factory.getOne(Tour, { path: 'reviews' });
 exports.createTour = factory.createOne(Tour);
-exports.updateTour = factory.updateOne(Tour);
+// exports.updateTour = factory.updateOne(Tour);
 exports.deleteTour = factory.deleteOne(Tour);
 
 // Get Tour By Slug
