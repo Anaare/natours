@@ -6,6 +6,7 @@
 
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { Link } from "react-router";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -70,7 +71,11 @@ const Login = () => {
               minLength={8}
             />
           </div>
-
+          <div className="form__group">
+            <Link to="" className="forgot_password__el">
+              Forgot your password?
+            </Link>
+          </div>
           <div className="form__group">
             <button
               className="btn btn--green"

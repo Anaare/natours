@@ -22,6 +22,7 @@
     "concurrently": "^9.2.1"
   },
   "dependencies": {
-    "mapbox-gl": "^0.50.0"
+    "mapbox-gl": "^0.50.0",
+    "react": "^19.2.1"
   }
 }
