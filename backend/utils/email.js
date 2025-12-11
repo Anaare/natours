@@ -25,9 +25,9 @@ module.exports = class Email {
   }
 
   newTransport() {
-    if (process.env.NODE_ENV === 'production') {
-      return 1; // Update later when adding SendGrid/Mailgun/Brevo
-    }
+    // if (process.env.NODE_ENV === 'production') {
+    //   return 1; // Update later when adding SendGrid/Mailgun/Brevo
+    // }
 
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
