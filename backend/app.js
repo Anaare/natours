@@ -17,6 +17,8 @@ const reviewRouter = require('./routes/reviewRoutes');
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 // 1) GLOBAL MIDDLEWARES
 
 // app.use is a METHOD used to MOUNT middleware functions!!!
