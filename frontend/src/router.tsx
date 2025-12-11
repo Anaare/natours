@@ -5,19 +5,20 @@ import Tour from "./pages/Tour.tsx";
 import Login from "./components/Login.tsx";
 import Signup from "./components/Signup.tsx";
 import User from "./pages/User.tsx";
+import ForgotPassword from "./components/password-components/ForgotPassword.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, // Shared layout for the entire app
+    element: <App />,
     children: [
       {
-        index: true, // This is the default route for the path '/'
+        index: true,
         element: <Overview />,
         // loader: overviewLoader, // Data loading function for the list of tours
       },
       {
-        path: "tours/:slug", // I'll need to add ACTUAL NAME of the tour replacing :tourSlug
+        path: "tours/:slug",
         element: <Tour />,
       },
       {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/me",
         element: <User />,
+      },
+      {
+        path: "/forgotPassword",
+        element: <ForgotPassword />,
       },
     ],
   },

@@ -1,9 +1,3 @@
-// import { useNavigate } from "react-router-dom";
-// import type { AxiosResponse } from "axios";
-// import { useAuth } from "../hooks/useAuth";
-// import axiosInstance from "../api/axiosInstance";
-// import type { LoginResponse } from "../types/index";
-
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Link } from "react-router";
@@ -72,7 +66,7 @@ const Login = () => {
             />
           </div>
           <div className="form__group">
-            <Link to="" className="forgot_password__el">
+            <Link to="/forgotPassword" className="forgot_password__el">
               Forgot your password?
             </Link>
           </div>

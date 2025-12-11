@@ -187,7 +187,7 @@ const BaseEmailTemplate = ({
                               <tr>
                                 <td>
                                   {/* CONTENT BLOCK - This is where you insert the specific email content */}
-                                  <p>Hi {firstName},</p>
+                                  {/* <p>Hi {firstName},</p> */}
                                   {content}
 
                                   {/* Primary Button */}
