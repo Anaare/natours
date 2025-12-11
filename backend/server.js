@@ -10,19 +10,6 @@ process.on('uncaughtException', (err) => {
 
 dotenv.config({ path: './config.env' });
 
-// Add these lines at the very top of your server.js
-require('@babel/register')({
-  // Presets tell Babel how to translate the code
-  presets: ['@babel/preset-env', '@babel/preset-react'],
-
-  // IMPORTANT: Tell Babel which directories to process.
-  // It should include the path to your new template files.
-  ignore: [/node_modules/],
-
-  // You might also need this if your template files use .jsx extension
-  extensions: ['.js', '.jsx'],
-});
-
 const app = require('./app');
 
 // app.use('/img/users', express.static(path.join(__dirname, 'public/img/users')));
