@@ -73,7 +73,7 @@ module.exports = class Email {
 
     // 3. Create a transport and send email
 
-    await this.newTransport().sendMail(mailOptions); //Returns promise
+    await this.newTransport().sendMail(mailOptions);
   }
 
   async sendWelcome() {

@@ -6,12 +6,9 @@ const PasswordResetEmail = ({ firstName, url }) => {
     <React.Fragment>
       <p>Hi {firstName} 🎉🙏</p>
       <p>
-        Forgot your password? Submit a PATCH request with your new password and
-        passwordConfirm to:
-        <a href={url}>{url}</a>. If you didn't forget your password, please
-        ignore this email!
+        Forgot your password? Follow a link to recover it. If you didn't forget
+        your password, please ignore this email!
       </p>
-      <p>(Website for this action not yet implemented.)</p>
     </React.Fragment>
   );
 
