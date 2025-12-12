@@ -37,6 +37,27 @@ A full-stack web application for browsing and booking nature tours. The backend 
 - Error handling with custom AppError class
 - Security middleware (rate limiting, sanitization, etc.)
 
+## ✉️ Email Functionality (Development Only)
+
+This project includes a complete transactional email system supporting:
+
+- Welcome emails after signup
+- Password reset emails
+- Secure reset token generation
+- HTML + text email templates
+
+Email delivery uses Brevo SMTP + Nodemailer.
+
+### Why Development Only?
+
+- Brevo requires a verified domain for production SMTP
+- This project does not use a verified domain
+- Render free-tier backend cannot send SMTP without domain verification
+- To avoid exposing production credentials, email sending is enabled only during local development
+
+The feature remains fully implemented for demonstration and portfolio purposes.
+To enable production email, configure your domain in Brevo and update config.env.
+
 ## Demo
 
 🔗 **Live Application (Frontend)**: https://natours-v1-inky.vercel.app/
