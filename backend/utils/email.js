@@ -1,57 +1,39 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const { convert } = require('html-to-text');
 
 const buildWelcomeEmail = require('../templates/WelcomeEmail');
 const buildPasswordResetEmail = require('../templates/PasswordResetEmail');
-
-const getTemplateHTML = (templateName, firstName, url) => {
-  switch (templateName) {
-    case 'WELCOME':
-      return buildWelcomeEmail(firstName, url);
-    case 'PASSWORD_RESET':
-      return buildPasswordResetEmail(firstName, url);
-    default:
-      throw new Error(`Unknown email template: ${templateName}`);
-  }
-};
 
 module.exports = class Email {
   constructor(user, url) {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = `Ana Arevadze <${process.env.EMAIL_FROM}>`;
+    this.from = process.env.RESEND_FROM;
+    this.resend = new Resend(process.env.RESEND_API_KEY);
   }
 
-  newTransport() {
-    return nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
+  getTemplateHTML(template) {
+    if (template === 'WELCOME') {
+      return buildWelcomeEmail(this.firstName, this.url);
+    }
+    if (template === 'PASSWORD_RESET') {
+      return buildPasswordResetEmail(this.firstName, this.url);
+    }
+    throw new Error(`Unknown template: ${template}`);
   }
 
   async send(template, subject) {
-    const html =
-      template === 'WELCOME'
-        ? buildWelcomeEmail(this.firstName, this.url)
-        : buildPasswordResetEmail(this.firstName, this.url);
+    const html = this.getTemplateHTML(template);
+    const text = convert(html);
 
-    const text = convert(html, { wordwrap: 130 });
-
-    const mailOptions = {
+    await this.resend.emails.send({
       from: this.from,
       to: this.to,
       subject,
       html,
       text,
-    };
-
-    await this.newTransport().sendMail(mailOptions);
+    });
   }
 
   async sendWelcome() {
