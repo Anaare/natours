@@ -145,21 +145,25 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 2) Generate the random reset
   const resetToken = user.createPasswordResetToken();
 
-  console.log(resetToken);
-
   await user.save({ validateBeforeSave: false });
 
   // 3) Send it to user's email
   try {
-    // const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
-    // const resetURL = `${process.env.FRONTEND_URL}/resetPassword/${resetToken}`;
     const resetURL =
       process.env.NODE_ENV === 'development'
         ? `http://localhost:5173/resetPassword/${resetToken}`
         : `${process.env.FRONTEND_URL}/resetPassword/${resetToken}`;
 
-    console.log('Generated Reset URL:', resetURL);
-    await new Email(user, resetURL).sendPasswordReset();
+    // await new Email(user, resetURL).sendPasswordReset();
+    console.log('STEP 1: About to send email via Resend');
+
+    const email = new Email(user, resetURL);
+    console.log('STEP 2: Email instance created:', email);
+
+    await email.sendPasswordReset();
+
+    console.log('STEP 3: Email sendPasswordReset() completed');
+
     await res.status(200).json({
       status: 'success',
       message: 'Token sent to email!',
