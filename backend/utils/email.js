@@ -1,7 +1,6 @@
 const nodemailer = require('nodemailer');
 const { convert } = require('html-to-text');
 
-// Import HTML templates
 const buildWelcomeEmail = require('../templates/WelcomeEmail');
 const buildPasswordResetEmail = require('../templates/PasswordResetEmail');
 
