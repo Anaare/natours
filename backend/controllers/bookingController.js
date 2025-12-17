@@ -19,8 +19,8 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     payment_method_types: ['card'],
     success_url:
       process.env.NODE_ENV === 'development'
-        ? `http://localhost:5173/checkout-session/${req.params.tourId}`
-        : `${process.env.FRONTEND_URL}/checkout-session/${req.params.tourId}`,
+        ? `http://localhost:5173`
+        : `${process.env.FRONTEND_URL}`,
     cancel_url:
       process.env.NODE_ENV === 'development'
         ? `http://localhost:5173/tour/${tour.slug}`

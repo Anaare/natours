@@ -15,8 +15,6 @@ const ReviewCard = ({
   rating,
   userReview,
 }: reviewsProps) => {
-  console.log(rating);
-
   return (
     <div className="reviews__card">
       <div className="reviews__avatar">
