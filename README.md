@@ -58,7 +58,7 @@ Email delivery uses Brevo SMTP + Nodemailer.
 The feature remains fully implemented for demonstration and portfolio purposes.
 To enable production email, configure your domain in Brevo and update config.env.
 
-💳 Payments (Stripe — Test Mode)
+## 💳 Payments (Stripe — Test Mode)
 
 - Secure tour booking via Stripe Checkout
 - Backend-generated Stripe Checkout Sessions
