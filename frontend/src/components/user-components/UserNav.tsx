@@ -42,7 +42,7 @@ const UserNav = () => {
         </li>
         <li>
           <NavLink
-            to="/"
+            to="/myTours"
             className={({ isActive }) => (isActive ? "side-nav--active" : "")}
           >
             <svg className="card__icon">

@@ -7,6 +7,7 @@ import Signup from "./components/Signup.tsx";
 import User from "./pages/User.tsx";
 import ForgotPassword from "./components/password-components/ForgotPassword.tsx";
 import ResetPassword from "./components/password-components/ResetPassword.tsx";
+import BookedTours from "./components/user-components/BookedTours.tsx";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/resetPassword/:token",
         element: <ResetPassword />,
+      },
+      {
+        path: "/myTours",
+        element: <BookedTours />,
       },
     ],
   },

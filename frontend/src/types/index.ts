@@ -150,3 +150,37 @@ export interface UserApiResponse {
     user: User;
   };
 }
+
+export interface PopulatedTour {
+  _id: string;
+  id: string;
+  name: string;
+  guides: Guide[];
+  durationWeeks: number | null;
+}
+
+export interface PopulatedUser {
+  _id: string;
+  name: string;
+  email: string;
+  photo: string;
+  role: string;
+  __v?: number;
+}
+
+export interface Booking {
+  _id: string;
+  tour: PopulatedTour;
+  user: PopulatedUser;
+  price: number;
+  createdAt: string; // Dates come as ISO strings from JSON
+  paid: boolean;
+}
+
+export interface BookingResponse {
+  status: "success" | "fail" | "error";
+  results?: number;
+  data: {
+    doc: Booking[];
+  };
+}

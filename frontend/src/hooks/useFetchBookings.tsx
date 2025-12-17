@@ -1,0 +1,51 @@
+import { useEffect, useState } from "react";
+import { useAuth } from "./useAuth";
+
+import type { Booking } from "../types";
+
+export const useFetchBookings = () => {
+  const [bookings, setBookings] = useState<Booking[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      if (!user) return;
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        const API_URL = import.meta.env.VITE_API_URL;
+
+        const res = await fetch(`${API_URL}/api/v1/bookings/all-bookings`);
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const json = await res.json();
+
+        const bookingsArray: Booking[] = json.data.doc;
+
+        if (Array.isArray(bookingsArray)) {
+          setBookings(bookingsArray);
+        } else {
+          throw new Error("Invalid review data structure received from API.");
+        }
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred"
+        );
+        setBookings(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [user]);
+
+  return { bookings, loading, error };
+};

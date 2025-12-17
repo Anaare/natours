@@ -7,6 +7,15 @@ const catchAsync = require('../utils/catchAsync');
 
 const factory = require('./handlerFactory');
 
+// BOOKINGS
+exports.getAllBookings = factory.getAll(Booking);
+exports.getBooking = factory.getOne(Booking);
+// exports.getTour = factory.getOne(Tour, { path: 'reviews' });
+// exports.updateTour = factory.updateOne(Tour);
+// exports.deleteTour = factory.deleteOne(Tour);
+
+// Creating a single booking
+
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 1) Get the currently booked tour
   const tour = await Tour.findById(req.params.tourId);
@@ -51,13 +60,6 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     session,
   });
 });
-
-// exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-//   const { tour, user, price } = req.query;
-
-//   if (!tour && !user && !price) return next();
-//   await Booking.create({ tour, user, price });
-// });
 
 exports.createBooking = catchAsync(async (req, res, next) => {
   const { tour, user, price } = req.body;
