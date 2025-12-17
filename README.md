@@ -58,6 +58,18 @@ Email delivery uses Brevo SMTP + Nodemailer.
 The feature remains fully implemented for demonstration and portfolio purposes.
 To enable production email, configure your domain in Brevo and update config.env.
 
+💳 Payments (Stripe — Test Mode)
+
+- Secure tour booking via Stripe Checkout
+- Backend-generated Stripe Checkout Sessions
+- Authenticated payment initiation
+- Redirect-based hosted checkout flow
+- Proper success and cancel redirects
+- Error handling during payment initialization
+
+Note:
+Payments are implemented using Stripe Test Mode only. The full payment flow is functional and demonstrable, but live payments are not enabled due to Stripe account verification and regional availability constraints.
+
 ## Demo
 
 🔗 **Live Application (Frontend)**: https://natours-v1-inky.vercel.app/
@@ -141,6 +153,18 @@ npm run dev
 
 6. Open your browser to http://localhost:5173
 
+7. Stripe Configuration (Optional)
+   To test the payment flow locally:
+
+- Create a Stripe account
+- Enable Test Mode
+- Add the following environment variables to config.env (backend):
+
+```bash
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+```
+
 ## Usage
 
 ### 🌍 Browse Tours
@@ -168,3 +192,7 @@ npm run dev
 - This project is based on the Natours app from Jonas Schmedtmann’s Node.js course.
 - I rebuilt the entire frontend UI from Pug templates into a modern React/TypeScript application to make the project more scalable and maintainable.
 - The backend structure follows the original MVC layout, with improvements where needed.
+- Stripe payments are implemented using Stripe Checkout in test mode.
+- The integration follows Stripe’s current recommended approach.
+- Payment logic is separated cleanly between frontend and backend.
+- Webhook-based booking confirmation can be enabled once live payments are supported.
