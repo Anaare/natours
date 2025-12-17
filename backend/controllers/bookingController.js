@@ -1,5 +1,6 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
+const Booking = require('../models/bookingModel');
 const Tour = require('../models/tourModel');
 const appError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -19,7 +20,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     payment_method_types: ['card'],
     success_url:
       process.env.NODE_ENV === 'development'
-        ? `http://localhost:5173`
+        ? `http://localhost:5173/?tour=${req.params.tourId}&user=${req.user.id}&price=${tour.price}`
         : `${process.env.FRONTEND_URL}`,
     cancel_url:
       process.env.NODE_ENV === 'development'
@@ -48,5 +49,27 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     session,
+  });
+});
+
+// exports.createBookingCheckout = catchAsync(async (req, res, next) => {
+//   const { tour, user, price } = req.query;
+
+//   if (!tour && !user && !price) return next();
+//   await Booking.create({ tour, user, price });
+// });
+
+exports.createBooking = catchAsync(async (req, res, next) => {
+  const { tour, user, price } = req.body;
+
+  if (!tour || !user || !price) {
+    return next(new appError('Missing booking information', 400));
+  }
+
+  await Booking.create({ tour, user, price });
+
+  res.status(201).json({
+    status: 'success',
+    message: 'Booking successfully created!',
   });
 });
