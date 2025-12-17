@@ -10,9 +10,9 @@ const factory = require('./handlerFactory');
 // BOOKINGS
 exports.getAllBookings = factory.getAll(Booking);
 exports.getBooking = factory.getOne(Booking);
-// exports.getTour = factory.getOne(Tour, { path: 'reviews' });
-// exports.updateTour = factory.updateOne(Tour);
-// exports.deleteTour = factory.deleteOne(Tour);
+exports.createBooking = factory.createOne(Booking);
+exports.updateBooking = factory.updateOne(Booking);
+exports.deleteBooking = factory.deleteOne(Booking);
 
 // Creating a single booking
 
