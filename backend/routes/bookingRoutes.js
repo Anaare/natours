@@ -12,9 +12,9 @@ router
   .get(authController.protect, bookingController.getCheckoutSession)
   .post(authController.protect, bookingController.createBooking);
 
-router.use(authController.restrictTo('admin', 'lead-guide'));
-
 router.route('/all-bookings').get(bookingController.getAllBookings);
+
+router.use(authController.restrictTo('admin', 'lead-guide'));
 
 router
   .route('/:id')

@@ -47,8 +47,6 @@ export const useUpdateUser = () => {
       const data: UserApiResponse = await res.json();
       const userAfterUpdate = data.data.user;
 
-      console.log(userAfterUpdate);
-
       updateUserContext(userAfterUpdate);
       setUpdatedUser(userAfterUpdate);
       return userAfterUpdate;

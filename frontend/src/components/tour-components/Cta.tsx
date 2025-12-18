@@ -29,7 +29,6 @@ const Cta = () => {
         window.location.href = session.data.session.url;
 
         if (error) {
-          console.error("Stripe redirect error:", error);
           toast.error("Payment failed to initialize.");
         }
       }

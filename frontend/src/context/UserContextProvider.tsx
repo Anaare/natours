@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import type { UserContextType } from "./UserContext";
 import { UserContext } from "./UserContext";
 import type { User, LoginResponse } from "../types/index"; // Import your types
@@ -12,8 +12,35 @@ export const UserContextProvider = ({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const restoreSession = async () => {
+      try {
+        setLoading(true);
+        const API_URL = import.meta.env.VITE_API_URL;
+
+        const res = await fetch(`${API_URL}/api/v1/users/me`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.data.user);
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+        setIsInitializing(false);
+      }
+    };
+
+    restoreSession();
+  }, []);
 
   const updateUserContext = useCallback((updatedUser: User) => {
     setUser(updatedUser);
@@ -48,8 +75,6 @@ export const UserContextProvider = ({
 
         setUser(loggedInUser);
 
-        localStorage.setItem("token", data.token as string);
-
         navigate("/");
       } catch (err) {
         const errorMessage =
@@ -67,9 +92,15 @@ export const UserContextProvider = ({
     [navigate]
   );
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    await fetch(`${API_URL}/api/v1/users/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+
     setUser(null);
-    localStorage.removeItem("token");
   }, []);
 
   const isLoggedIn = !!user;
@@ -83,8 +114,18 @@ export const UserContextProvider = ({
       login,
       logout,
       updateUserContext,
+      isInitializing,
     }),
-    [user, loading, error, login, logout, isLoggedIn, updateUserContext]
+    [
+      user,
+      loading,
+      error,
+      login,
+      logout,
+      isLoggedIn,
+      updateUserContext,
+      isInitializing,
+    ]
   );
 
   return (

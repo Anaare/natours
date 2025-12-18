@@ -41,8 +41,6 @@ const Signup = () => {
 
       // 2. Check if the backend response was successful
       if (res.data.status === "success" && res.data.data.user) {
-        console.log("Signup successful! Redirecting...");
-
         // 4. Redirect the user to the homepage or dashboard
         navigate("/");
       }

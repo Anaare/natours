@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         element: <ResetPassword />,
       },
       {
-        path: "/myTours",
+        path: "/my-tours",
         element: <BookedTours />,
       },
     ],

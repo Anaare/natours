@@ -10,7 +10,7 @@ export const useFetchBookings = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    const fetchReviews = async () => {
+    const fetchBookings = async () => {
       if (!user) return;
 
       try {
@@ -19,7 +19,13 @@ export const useFetchBookings = () => {
 
         const API_URL = import.meta.env.VITE_API_URL;
 
-        const res = await fetch(`${API_URL}/api/v1/bookings/all-bookings`);
+        const res = await fetch(`${API_URL}/api/v1/bookings/all-bookings`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
@@ -44,7 +50,7 @@ export const useFetchBookings = () => {
       }
     };
 
-    fetchReviews();
+    fetchBookings();
   }, [user]);
 
   return { bookings, loading, error };

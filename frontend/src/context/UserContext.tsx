@@ -6,6 +6,7 @@ export interface UserContextType {
   loading: boolean;
   error: string | null;
   isLoggedIn: boolean;
+  isInitializing: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   updateUserContext: (updatedUser: User) => void;

@@ -6,9 +6,14 @@ import Header from "./components/Header";
 import "./App.css";
 
 import { UserContextProvider } from "./context/UserContextProvider";
+import { useAuth } from "./hooks/useAuth";
 
 function AppContent() {
-  // useAuthInit();
+  const { isInitializing } = useAuth();
+
+  if (isInitializing) {
+    return <div className="app-loading">Loading...</div>;
+  }
 
   return (
     <>
