@@ -14,7 +14,9 @@ const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingController');
 const reviewRouter = require('./routes/reviewRoutes');
+const compression = require('compression');
 
 const app = express();
 
@@ -32,6 +34,16 @@ app.use(cookieParser());
 
 // Configuring CORS
 
+/* 
+If I want to allow EVERYONE to access API, which will work or "simple" 
+request -> GET + POST
+app.use(cors()) <- THAT'S IT 
+
+by adding options we allow all kinds of requests,
+which can be to ALL routes as well as to route we choose.
+app.options('*', cors());
+
+*/
 const allowedOrigins = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
@@ -67,6 +79,14 @@ const limiter = rateLimit({
 // 2) Mounting limiter
 app.use('/api', limiter);
 
+// MUST BE PLACED BEFORE app.use(express.json())
+
+app.post(
+  '/webhooks/stripe',
+  express.raw({ type: 'application/json' }),
+  bookingController.webhookCheckout,
+);
+
 // Body Parser, reading data from body into req.body
 app.use(
   express.json({
@@ -99,7 +119,9 @@ app.use(
 
 // Serve static files
 // To access it http://localhost:3000/overview.html (It doesn't need /public in it anymore)
-app.use(express.static(`${__dirname}/public`));
+// app.use(express.static(`${__dirname}/public`));
+
+app.use(compression());
 
 // Test Middleware
 app.use((req, res, next) => {
