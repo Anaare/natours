@@ -11,9 +11,6 @@ router.get('/logout', authController.logout);
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 
-// I GOT RID OF PROTECTED ROUTES FOR A MOMENT THERE!!!! I'll need to figure out how to work with protected
-// data in front part of the app
-
 // Mounting protect middleware to protect ALL routes that comes after it
 router.use(authController.protect);
 
@@ -25,7 +22,7 @@ router.patch(
 
 router.get(
   '/me',
-
+  authController.protect,
   userController.getMe,
   userController.getUser,
 );
@@ -35,6 +32,8 @@ router.get(
   authController.protect,
   userController.getMyBookings,
 );
+
+router.get('/my-reviews', userController.getMyReviews);
 
 router.patch(
   '/updateMe',

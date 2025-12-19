@@ -8,6 +8,7 @@ import User from "./pages/User.tsx";
 import ForgotPassword from "./components/password-components/ForgotPassword.tsx";
 import ResetPassword from "./components/password-components/ResetPassword.tsx";
 import BookedTours from "./components/user-components/BookedTours.tsx";
+import UserReviews from "./components/user-components/UserReviews.tsx";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "/my-tours",
         element: <BookedTours />,
+      },
+      {
+        path: "/my-reviews",
+        element: <UserReviews />,
       },
     ],
   },

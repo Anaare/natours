@@ -93,15 +93,19 @@ export const UserContextProvider = ({
   );
 
   const logout = useCallback(async () => {
-    const API_URL = import.meta.env.VITE_API_URL;
-
-    await fetch(`${API_URL}/api/v1/users/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-
-    setUser(null);
-  }, []);
+    try {
+      const API_URL = import.meta.env.VITE_API_URL;
+      await fetch(`${API_URL}/api/v1/users/logout`, {
+        method: "GET", // Check if your backend expects GET or POST
+        credentials: "include",
+      });
+    } catch (err) {
+      console.error("Logout failed", err);
+    } finally {
+      setUser(null);
+      navigate("/login");
+    }
+  }, [navigate]);
 
   const isLoggedIn = !!user;
 

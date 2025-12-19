@@ -1,5 +1,6 @@
 const Booking = require('../models/bookingModel');
 const User = require('../models/userModel');
+const Review = require('../models/reviewModel');
 const appError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
@@ -30,6 +31,19 @@ exports.getMyBookings = catchAsync(async (req, res, next) => {
     results: bookings.length,
     data: {
       doc: bookings,
+    },
+  });
+});
+
+exports.getMyReviews = catchAsync(async (req, res, next) => {
+  const reviews = await Review.find({ user: req.user.id });
+  console.log(reviews);
+
+  res.status(200).json({
+    status: 'success',
+    results: reviews.length,
+    data: {
+      doc: reviews,
     },
   });
 });

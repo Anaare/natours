@@ -12,7 +12,7 @@ const signToken = (id) => {
   });
 };
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   const isProduction = process.env.NODE_ENV === 'production';
@@ -21,7 +21,7 @@ const createSendToken = (user, statusCode, res) => {
     expires: new Date(Date.now() + cookieExpiresIn * 24 * 60 * 60 * 1000),
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    sameSite: isProduction ? 'none' : 'Lax',
   };
 
   res.cookie('jwt', token, cookieOptions);
@@ -52,7 +52,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   await new Email(newUser, url).sendWelcome();
 
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 201, req, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -70,7 +70,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new appError('Incorrect email or password', 401));
   }
   // 3) If everything is OK, send token back to a client
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -209,7 +209,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   // 3) Update changedPasswordAt property for the user
   // 4) Log the user in, send JWT to a client
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 // MY SOLUTION
@@ -254,14 +254,16 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 exports.logout = catchAsync(async (req, res, next) => {
   // Clear the JWT cookie by setting it to expire immediately
   res.cookie('jwt', 'loggedout', {
-    expires: new Date(Date.now() + 10 * 1000), // Expires in 10 seconds
+    expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'Lax',
   });
 
   res.status(200).json({
