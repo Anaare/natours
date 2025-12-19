@@ -29,17 +29,6 @@ const UserNav = () => {
   return (
     <nav className="user-view__menu">
       <ul className="side-nav">
-        {/* <li>
-          <NavLink
-            to="/"
-            className={({ isActive }) => (isActive ? "side-nav--active" : "")}
-          >
-            <svg className="card__icon">
-              <use xlinkHref="img/icons.svg#icon-settings"></use>
-            </svg>
-            Settings
-          </NavLink>
-        </li> */}
         <li>
           <NavLink
             to="/my-tours"
@@ -64,7 +53,7 @@ const UserNav = () => {
         </li>
         <li>
           <NavLink
-            to="/"
+            to="/billing"
             className={({ isActive }) => (isActive ? "side-nav--active" : "")}
           >
             <svg className="card__icon">

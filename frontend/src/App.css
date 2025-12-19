@@ -1401,3 +1401,69 @@ body {
   width: 1.75rem;
   margin-right: 2px;
 }
+
+/* BILLING */
+
+/* Billing Summary Box */
+.billing-summary {
+  background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
+  padding: 2rem;
+  border-radius: 5px;
+  color: #fff;
+  margin-bottom: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.billing-summary__label {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.billing-summary__value {
+  font-size: 2.5rem;
+  font-weight: 300;
+}
+
+/* Table Styling */
+.billing-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.5rem;
+  text-align: left;
+}
+
+.billing-table th {
+  padding: 1.5rem;
+  border-bottom: 2px solid #f1f1f1;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  color: #999;
+}
+
+.billing-table td {
+  padding: 2rem 1.5rem;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.billing-table__tour-name {
+  font-weight: 700;
+  color: #777;
+}
+
+.billing-table__price {
+  font-family: monospace;
+  font-weight: 700;
+  color: #55c57a;
+}
+
+.billing-table__status {
+  background-color: #55c57a;
+  color: #fff;
+  padding: 0.2rem 1rem;
+  border-radius: 10rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
