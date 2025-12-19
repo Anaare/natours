@@ -1,3 +1,4 @@
+const Booking = require('../models/bookingModel');
 const User = require('../models/userModel');
 const appError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -16,10 +17,22 @@ const filterObj = (obj, ...allowedFields) => {
 };
 
 exports.getMe = (req, res, next) => {
-  console.log(req.params);
   req.params.id = req.user.id;
   next();
 };
+
+exports.getMyBookings = catchAsync(async (req, res, next) => {
+  const bookings = await Booking.find({ user: req.user.id });
+  console.log(bookings);
+
+  res.status(200).json({
+    status: 'success',
+    results: bookings.length,
+    data: {
+      doc: bookings,
+    },
+  });
+});
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if. user POSTs password data
@@ -65,15 +78,3 @@ exports.getUser = factory.getOne(User);
 exports.getAllUsers = factory.getAll(User);
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
-
-// exports.getAllUsers = catchAsync(async (req, res) => {
-//   const users = await User.find();
-
-//   res.status(200).json({
-//     status: 'success',
-//     results: users.length,
-//     data: {
-//       users,
-//     },
-//   });
-// });

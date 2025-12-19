@@ -176,5 +176,6 @@ exports.webhookCheckout = async (request, response, next) => {
   }
 
   // Return a 200 response to acknowledge receipt of the event
-  response.send();
+  // response.send();
+  response.status(200).json({ received: true });
 };

@@ -8,6 +8,7 @@ export const useFetchBookings = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
+  console.log(user);
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -19,7 +20,7 @@ export const useFetchBookings = () => {
 
         const API_URL = import.meta.env.VITE_API_URL;
 
-        const res = await fetch(`${API_URL}/api/v1/bookings/all-bookings`, {
+        const res = await fetch(`${API_URL}/api/v1/users/my-bookings`, {
           method: "GET",
           credentials: "include",
           headers: {
@@ -32,6 +33,7 @@ export const useFetchBookings = () => {
         }
 
         const json = await res.json();
+        console.log(json);
 
         const bookingsArray: Booking[] = json.data.doc;
 

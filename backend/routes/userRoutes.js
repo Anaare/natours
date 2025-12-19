@@ -29,6 +29,13 @@ router.get(
   userController.getMe,
   userController.getUser,
 );
+
+router.get(
+  '/my-bookings',
+  authController.protect,
+  userController.getMyBookings,
+);
+
 router.patch(
   '/updateMe',
   uploadUserPhoto.single('photo'),
