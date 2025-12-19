@@ -29,10 +29,16 @@ export const UserContextProvider = ({
 
         if (res.ok) {
           const data = await res.json();
-          setUser(data.data.user);
+          setUser(data.data.data);
+        } else {
+          // User is not authenticated or session expired
+          setUser(null);
+          setError(null);
         }
       } catch (err) {
-        console.log(err);
+        console.error("Session restore failed:", err);
+        setUser(null);
+        setError(null);
       } finally {
         setLoading(false);
         setIsInitializing(false);

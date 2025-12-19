@@ -1,8 +1,6 @@
 import { NavLink } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 
-// Admin Nav Will be rendered here conditionally
-
 const UserNav = () => {
   const { user, loading, error } = useAuth();
 
@@ -92,31 +90,6 @@ const UserNav = () => {
                   <use xlinkHref="img/icons.svg#icon-users"></use>
                 </svg>
                 Manage users
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  isActive ? "side-nav--active" : ""
-                }
-              >
-                <svg className="card__icon">
-                  <use xlinkHref="img/icons.svg#icon-star"></use>
-                </svg>
-                My reviews
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  isActive ? "side-nav--active" : ""
-                }
-              >
-                <svg className="card__icon">
-                  <use xlinkHref="img/icons.svg#icon-credit-briefcase"></use>
-                </svg>
               </NavLink>
             </li>
           </ul>
